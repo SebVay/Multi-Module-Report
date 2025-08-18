@@ -1,0 +1,5 @@
+[versions]
+version = "0.0.1-SNAPSHOT"
+
+[libraries]
+module = { group = "com.sebast.mar", name = "danger-modules-report", version.ref = "version" }

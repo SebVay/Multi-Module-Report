@@ -1,0 +1,26 @@
+[versions]
+mockk = "1.14.5"
+
+# Bom
+junitBom = "5.13.4"
+
+# Plugin
+#noinspection NewerVersionAvailable - because Danger Kotlin relies on 2.0.0
+kotlin = "2.0.21"
+spotless = "7.2.1"
+detekt = "1.23.8"
+ktlint = "1.7.1"
+
+[libraries]
+# Junit & Tests
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
+junit-jupiter-core = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
