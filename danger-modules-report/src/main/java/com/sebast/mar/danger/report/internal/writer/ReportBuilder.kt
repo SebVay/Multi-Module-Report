@@ -1,11 +1,7 @@
 package com.sebast.mar.danger.report.internal.writer
 
-import com.sebast.mar.danger.report.Module
-import com.sebast.mar.danger.report.Status.Created
-import com.sebast.mar.danger.report.Status.Deleted
-import com.sebast.mar.danger.report.Status.Modified
-import com.sebast.mar.danger.report.VersionedFile
-import com.sebast.mar.danger.report.internal.GetModules
+import com.sebast.mar.danger.report.info.PullRequest
+import com.sebast.mar.danger.report.internal.GetPullRequest
 
 /**
  * Abstract base class for writing reports.
@@ -16,28 +12,18 @@ import com.sebast.mar.danger.report.internal.GetModules
  * Currently, it is only subclassed by GithubReportWriter.
  * Common logic may be extracted to this class in the future.
  */
-internal abstract class ReportWriter(
-    private val getModules: GetModules,
+internal abstract class ReportBuilder(
+    private val getPullRequest: GetPullRequest,
 ) {
 
-    protected val modules: List<Module> by lazy { getModules() }
-
-    protected val createdFiles: List<VersionedFile> by lazy {
-        modules.flatMap(Module::files).filter { it.status == Created }
-    }
-
-    protected val modifiedFiles: List<VersionedFile> by lazy {
-        modules.flatMap(Module::files).filter { it.status == Modified }
-    }
-
-    protected val deletedFiles: List<VersionedFile> by lazy {
-        modules.flatMap(Module::files).filter { it.status == Deleted }
-    }
+    protected val pullRequest: PullRequest by lazy { getPullRequest() }
 
     /**
-     * Writes the sections of the report.
+     * Writes the top section of the report if it exists.
+     * If the top section in reportConfig is null or empty, nothing will be written.
+     * The section content is appended directly to the writer without any modifications.
      */
-    abstract fun writeSections()
+    abstract fun sections()
 
     /**
      * Writes an HTML table to the report.
@@ -47,17 +33,19 @@ internal abstract class ReportWriter(
      *              This lambda should append HTML table rows (`<tr>`) and cells (`<td>`, `<th>`)
      *              to the current output stream.
      */
-    abstract fun writeTable(block: () -> Unit)
+    abstract fun table(block: () -> Unit)
 
     /**
      * Writes the header row for the report table.
      * The header row includes columns for file status (e.g., Added, Modified, Deleted)
      * and the corresponding line changes.
      */
-    abstract fun writeHeaderRow()
+    abstract fun headerRow()
 
     /**
      * Writes the table rows for each module, displaying the number of added, modified, and deleted lines.
      */
-    abstract fun writeModules()
+    abstract fun moduleRows()
+
+    abstract fun build(): String
 }

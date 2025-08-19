@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.interceptor.helper
+package com.sebast.mar.danger.report.internal.helper
 
 import systems.danger.kotlin.models.danger.DangerDSL
 

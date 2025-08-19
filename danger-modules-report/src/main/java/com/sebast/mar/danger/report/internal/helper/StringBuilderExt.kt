@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.interceptor.helper
+package com.sebast.mar.danger.report.internal.helper
 
 internal fun StringBuilder.tr(block: () -> Unit = {}) {
     append("<tr>")

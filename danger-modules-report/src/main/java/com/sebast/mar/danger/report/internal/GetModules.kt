@@ -1,12 +1,12 @@
 package com.sebast.mar.danger.report.internal
 
-import com.sebast.mar.danger.report.Module
-import com.sebast.mar.danger.report.Status.Created
-import com.sebast.mar.danger.report.Status.Deleted
-import com.sebast.mar.danger.report.Status.Modified
-import com.sebast.mar.danger.report.VersionedFile
+import com.sebast.mar.danger.report.info.Module
+import com.sebast.mar.danger.report.info.VersionedFile
+import com.sebast.mar.danger.report.info.VersionedFile.Status.Created
+import com.sebast.mar.danger.report.info.VersionedFile.Status.Deleted
+import com.sebast.mar.danger.report.info.VersionedFile.Status.Modified
 import com.sebast.mar.danger.report.interceptor.ModuleInterceptor
-import com.sebast.mar.danger.report.interceptor.helper.DangerWrapper
+import com.sebast.mar.danger.report.internal.helper.DangerWrapper
 
 /**
  * Interface for retrieving a list of modules that have been changed in the current pull request.

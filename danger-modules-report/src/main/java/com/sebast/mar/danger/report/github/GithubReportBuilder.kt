@@ -1,39 +1,42 @@
 package com.sebast.mar.danger.report.github
 
 import com.sebast.mar.danger.report.ReportConfig
-import com.sebast.mar.danger.report.Status
-import com.sebast.mar.danger.report.VersionedFile
-import com.sebast.mar.danger.report.interceptor.helper.table
-import com.sebast.mar.danger.report.interceptor.helper.td
-import com.sebast.mar.danger.report.interceptor.helper.th
-import com.sebast.mar.danger.report.interceptor.helper.tr
-import com.sebast.mar.danger.report.internal.GetModules
-import com.sebast.mar.danger.report.internal.writer.ReportWriter
+import com.sebast.mar.danger.report.info.PullRequest
+import com.sebast.mar.danger.report.info.VersionedFile
+import com.sebast.mar.danger.report.info.VersionedFile.Status
+import com.sebast.mar.danger.report.internal.GetPullRequest
+import com.sebast.mar.danger.report.internal.helper.table
+import com.sebast.mar.danger.report.internal.helper.td
+import com.sebast.mar.danger.report.internal.helper.th
+import com.sebast.mar.danger.report.internal.helper.tr
+import com.sebast.mar.danger.report.internal.writer.ReportBuilder
 
-internal class GithubReportWriter(
+internal class GithubReportBuilder(
     private val reportConfig: ReportConfig,
-    getModules: GetModules,
-) : ReportWriter(getModules) {
+    getPullRequest: GetPullRequest,
+) : ReportBuilder(getPullRequest) {
 
     private val writer = StringBuilder()
 
-    /**
-     * Writes the "Updated Modules" section to the report.
-     * This section is only written if [ReportConfig.writeSections] is true.
-     */
-    override fun writeSections() {
-        writer.takeIf { reportConfig.writeSections }?.append(
-            """
-            # Updated Modules
-            """.trimIndent(),
-        )
+    override fun sections(): Unit = with(writer) {
+        if (reportConfig.isHostIncorrect) {
+            appendLine(INCORRECT_HOST_WARNING)
+        }
+
+        if (!reportConfig.topSection.isNullOrEmpty()) {
+            appendLine(reportConfig.topSection)
+        }
     }
 
-    override fun writeTable(block: () -> Unit) {
+    override fun table(block: () -> Unit) {
         writer.table(block)
     }
 
-    override fun writeHeaderRow(): Unit = with(writer) {
+    override fun headerRow(): Unit = with(writer) {
+        val createdFiles = pullRequest.createdFiles
+        val modifiedFiles = pullRequest.modifiedFiles
+        val deletedFiles = pullRequest.deletedFiles
+
         tr {
             th()
 
@@ -71,7 +74,12 @@ internal class GithubReportWriter(
      * and removed files with a red circle.
      * Each file is linked to its corresponding URL.
      */
-    override fun writeModules(): Unit = with(writer) {
+    override fun moduleRows(): Unit = with(writer) {
+        val modules = pullRequest.modules
+        val createdFiles = pullRequest.createdFiles
+        val modifiedFiles = pullRequest.modifiedFiles
+        val deletedFiles = pullRequest.deletedFiles
+
         modules.forEach { module ->
             tr {
                 td {
@@ -80,35 +88,33 @@ internal class GithubReportWriter(
 
                 if (createdFiles.isNotEmpty()) {
                     td {
-                        module.files
-                            .filter { it.status == Status.Created }
-                            .forEach {
-                                append("🟢&nbsp;${it.getFileLink("danger.htmlUrl()")}<br>")
-                            }
+                        module.createdFiles
+                            .map { file -> pullRequest.getLinkOf(file) }
+                            .forEach { link -> append("🟢&nbsp;$link<br>") }
                     }
                 }
 
                 if (modifiedFiles.isNotEmpty()) {
                     td {
-                        module.files
-                            .filter { it.status == Status.Modified }
-                            .forEach { versionedFile ->
-                                append("🟡&nbsp;${versionedFile.getFileLink("danger.htmlUrl()")}<br>")
-                            }
+                        module.modifiedFiles
+                            .map { file -> pullRequest.getLinkOf(file) }
+                            .forEach { link -> append("🟡&nbsp;$link<br>") }
                     }
                 }
 
                 if (deletedFiles.isNotEmpty()) {
                     td {
-                        module.files
-                            .filter { it.status == Status.Deleted }
-                            .forEach {
-                                append("🔴&nbsp;${it.getFileLink("danger.htmlUrl()")}<br>")
-                            }
+                        module.deletedFiles
+                            .map { file -> pullRequest.getLinkOf(file) }
+                            .forEach { link -> append("🔴&nbsp;$link<br>") }
                     }
                 }
             }
         }
+    }
+
+    override fun build(): String {
+        return writer.toString()
     }
 
     /**
@@ -153,7 +159,16 @@ internal class GithubReportWriter(
      * @return An HTML `<a>` tag string that links to the file diff on GitHub.
      *         The link text will be the `name` of the file.
      */
-    private fun VersionedFile.getFileLink(pullRequestURL: String): String {
-        return "<a href=\"$pullRequestURL/files#diff-$sha256Path\">$name</a>"
+    private fun PullRequest.getLinkOf(file: VersionedFile): String {
+        return "<a href=\"${this.htmlLink}/files#diff-${file.sha256Path}\">${file.name}</a>"
+    }
+
+    companion object {
+        private val INCORRECT_HOST_WARNING = """
+            🚧🚧🚧
+            ### githubModuleReport has been called outside a Github context.
+            - Use it only for local testing, some functionalities or html link could be missing.
+            🚧🚧🚧
+        """.trimIndent()
     }
 }

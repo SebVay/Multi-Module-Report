@@ -1,6 +1,6 @@
-# Pull Request Fixture Module
+# Integration Module
 
-This module provides test fixtures for the Danger modules report plugin. It consists of example files and directory
+This module provides fixtures for the Danger modules report plugin. It consists of example files and directory
 structures that simulate various Pull Request changes.
 
 - The folders and files under this module are intentionally used to simulate PR diffs: added, updated, and removed
@@ -16,10 +16,9 @@ structures that simulate various Pull Request changes.
 - Verifying module detection and grouping logic
 - Validating line count calculations for changes
 
-## Publishing and Running Danger
+## Publishing and Running Danger 
 
 To publish the module locally and run Danger:
 
-- Run the script: `./run_danger.sh` in `integration-app`
-    - This will first publish the artifacts locally ([local-maven-repository](../build/local-maven-repository))
-    - Then execute Danger with the Dangerfile.df.kts configuration
+- Run the script: `./danger/run_danger.sh`
+  - This will publish the artifacts locally in the project's build dir: `../build/local-maven-repository`

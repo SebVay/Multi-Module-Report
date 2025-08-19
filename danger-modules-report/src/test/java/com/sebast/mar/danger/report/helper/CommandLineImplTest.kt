@@ -1,7 +1,7 @@
 package com.sebast.mar.danger.report.helper
 
-import com.sebast.mar.danger.report.interceptor.helper.CommandLine
-import com.sebast.mar.danger.report.interceptor.helper.CommandLineImpl
+import com.sebast.mar.danger.report.internal.helper.CommandLine
+import com.sebast.mar.danger.report.internal.helper.CommandLineImpl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

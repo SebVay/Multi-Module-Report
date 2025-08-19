@@ -15,12 +15,15 @@ public annotation class ReportDsl
  * such as whether to write sections and how to intercept modules.
  */
 @ReportDsl
-public class ReportConfigBuilder {
-    public var writeSections: Boolean = true
+public class ReportConfigBuilder internal constructor(
+    private val isHostCorrect: Boolean,
+) {
+    public var topSection: String? = "# Updated Modules"
     public var moduleInterceptor: ModuleInterceptor = NoOpModuleInterceptor
 
     internal fun build(): ReportConfig = ReportConfig(
-        writeSections = writeSections,
+        isHostIncorrect = isHostCorrect,
+        topSection = topSection,
         moduleInterceptor = moduleInterceptor,
     )
 }
@@ -28,10 +31,11 @@ public class ReportConfigBuilder {
 /**
  * Represents the configuration of the report generator.
  *
- * @property writeSections If true, sections are written to Danger.
+ * @property topSection A text to be displayed at the top of the report, markdown compatible.
  * @property moduleInterceptor Allows modules to be intercepted, modified, or omitted from the report.
  */
 internal data class ReportConfig(
-    val writeSections: Boolean = true,
+    val isHostIncorrect: Boolean,
+    val topSection: String?,
     val moduleInterceptor: ModuleInterceptor,
 )

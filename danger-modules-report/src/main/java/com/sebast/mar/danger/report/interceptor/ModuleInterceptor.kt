@@ -1,6 +1,6 @@
 package com.sebast.mar.danger.report.interceptor
 
-import com.sebast.mar.danger.report.Module
+import com.sebast.mar.danger.report.info.Module
 
 public fun interface ModuleInterceptor {
     public fun intercept(module: Module): Module?

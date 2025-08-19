@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.interceptor.helper
+package com.sebast.mar.danger.report.internal.helper
 
 import systems.danger.kotlin.models.danger.DangerDSL
 import systems.danger.kotlin.models.git.FilePath
@@ -32,11 +32,11 @@ internal class DangerWrapper(
      *
      * @return The HTML URL of the pull request.
      */
-    internal fun htmlUrl(): String {
+    internal fun htmlLink(): String {
         return if (dangerContext.onGitHub) {
             dangerContext.github.pullRequest.htmlURL
         } else {
-            throw UnsupportedOperationException("This method is only available on GitHub")
+            "127.0.0.1"
         }
     }
 }
