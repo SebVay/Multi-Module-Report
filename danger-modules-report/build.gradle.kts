@@ -70,10 +70,20 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             pom {
-                name = "Danger Report Configuration"
+                name = "Danger Modules Report"
                 description = "A library for configuring danger reports."
                 inceptionYear = "2025"
             }
+        }
+    }
+
+    repositories {
+        // Publishing to root project's build directory allows the integration-app module
+        // to reference the compiled artifact locally via file system repository during
+        // Danger script execution, avoiding the need for remote publishing
+        maven {
+            name = "RootProject"
+            url = uri("${rootProject.rootDir}/build/local-maven-repository")
         }
     }
 }

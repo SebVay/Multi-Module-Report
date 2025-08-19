@@ -27,3 +27,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Danger Report Modules"
 include(":danger-modules-report")
+include(":integration-app")
+include(":integration-app:domain")
+include(":integration-app:data")
