@@ -1,6 +1,6 @@
 package com.sebast.mar.danger.report
 
-import com.sebast.mar.danger.report.writer.ReportWriter
+import com.sebast.mar.danger.report.internal.writer.ReportWriter
 
 /**
  * Represents a danger report that can be generated.

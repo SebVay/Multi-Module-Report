@@ -2,6 +2,14 @@ package com.sebast.mar.danger.report
 
 import java.security.MessageDigest
 
+/**
+ * Represents a module that has been modified in the current Pull Request.
+ *
+ * @property name The name of the module.
+ * @property files A list of [VersionedFile] objects representing the modified files in this module.
+ * @property isFallback A boolean indicating whether this module is a fallback module.
+ *                      Fallback module is used when a file cannot be matched to a module.
+ */
 public data class Module(
     val name: String,
     val files: List<VersionedFile>,
@@ -30,6 +38,9 @@ public data class VersionedFile(
                 .fold("") { str, byte -> str + "%02x".format(byte) }
 }
 
+/**
+ * Represents the status of a file in a version control system.
+ */
 public enum class Status {
     Created,
     Modified,

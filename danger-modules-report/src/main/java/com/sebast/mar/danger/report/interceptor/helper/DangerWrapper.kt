@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.helper
+package com.sebast.mar.danger.report.interceptor.helper
 
 import systems.danger.kotlin.models.danger.DangerDSL
 import systems.danger.kotlin.models.git.FilePath

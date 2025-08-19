@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.writer
+package com.sebast.mar.danger.report.internal.writer
 
 import systems.danger.kotlin.markdown
 

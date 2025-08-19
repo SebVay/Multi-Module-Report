@@ -2,7 +2,7 @@ package com.sebast.mar.danger.report.interceptor
 
 import com.sebast.mar.danger.report.Module
 
-public interface ModuleInterceptor {
+public fun interface ModuleInterceptor {
     public fun intercept(module: Module): Module?
 }
 

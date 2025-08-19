@@ -3,12 +3,12 @@ package com.sebast.mar.danger.report.github
 import com.sebast.mar.danger.report.ReportConfig
 import com.sebast.mar.danger.report.Status
 import com.sebast.mar.danger.report.VersionedFile
-import com.sebast.mar.danger.report.helper.table
-import com.sebast.mar.danger.report.helper.td
-import com.sebast.mar.danger.report.helper.th
-import com.sebast.mar.danger.report.helper.tr
+import com.sebast.mar.danger.report.interceptor.helper.table
+import com.sebast.mar.danger.report.interceptor.helper.td
+import com.sebast.mar.danger.report.interceptor.helper.th
+import com.sebast.mar.danger.report.interceptor.helper.tr
 import com.sebast.mar.danger.report.internal.GetModules
-import com.sebast.mar.danger.report.writer.ReportWriter
+import com.sebast.mar.danger.report.internal.writer.ReportWriter
 
 internal class GithubReportWriter(
     private val reportConfig: ReportConfig,

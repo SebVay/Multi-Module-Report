@@ -5,8 +5,8 @@ import com.sebast.mar.danger.report.Status.Created
 import com.sebast.mar.danger.report.Status.Deleted
 import com.sebast.mar.danger.report.Status.Modified
 import com.sebast.mar.danger.report.VersionedFile
-import com.sebast.mar.danger.report.helper.DangerWrapper
 import com.sebast.mar.danger.report.interceptor.ModuleInterceptor
+import com.sebast.mar.danger.report.interceptor.helper.DangerWrapper
 
 /**
  * Interface for retrieving a list of modules that have been changed in the current pull request.

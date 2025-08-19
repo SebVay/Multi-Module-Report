@@ -1,4 +1,4 @@
-package com.sebast.mar.danger.report.writer
+package com.sebast.mar.danger.report.internal.writer
 
 import com.sebast.mar.danger.report.Module
 import com.sebast.mar.danger.report.Status.Created

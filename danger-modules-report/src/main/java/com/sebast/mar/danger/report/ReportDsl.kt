@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.sebast.mar.danger.report
 
 import com.sebast.mar.danger.report.interceptor.ModuleInterceptor
@@ -14,8 +16,8 @@ public annotation class ReportDsl
  */
 @ReportDsl
 public class ReportConfigBuilder {
-    private var writeSections: Boolean = true
-    private var moduleInterceptor: ModuleInterceptor = NoOpModuleInterceptor
+    public var writeSections: Boolean = true
+    public var moduleInterceptor: ModuleInterceptor = NoOpModuleInterceptor
 
     internal fun build(): ReportConfig = ReportConfig(
         writeSections = writeSections,

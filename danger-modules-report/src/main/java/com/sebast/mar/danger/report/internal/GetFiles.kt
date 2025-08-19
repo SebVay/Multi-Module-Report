@@ -2,7 +2,7 @@ package com.sebast.mar.danger.report.internal
 
 import com.sebast.mar.danger.report.Status
 import com.sebast.mar.danger.report.VersionedFile
-import com.sebast.mar.danger.report.helper.CommandLine
+import com.sebast.mar.danger.report.interceptor.helper.CommandLine
 import systems.danger.kotlin.models.git.FilePath
 
 /**
