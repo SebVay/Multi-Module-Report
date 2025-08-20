@@ -2,8 +2,10 @@
 
 package com.sebast.mar.danger.report
 
-import com.sebast.mar.danger.report.interceptor.ModuleInterceptor
-import com.sebast.mar.danger.report.interceptor.NoOpModuleInterceptor
+import com.sebast.mar.danger.report.interceptor.ModulesInterceptor
+import com.sebast.mar.danger.report.interceptor.NoOpModulesInterceptor
+import org.jetbrains.kotlin.com.google.inject.util.Modules
+
 
 @DslMarker
 public annotation class ReportDsl
@@ -19,12 +21,13 @@ public class ReportConfigBuilder internal constructor(
     private val isHostCorrect: Boolean,
 ) {
     public var topSection: String? = "# Updated Modules"
-    public var moduleInterceptor: ModuleInterceptor = NoOpModuleInterceptor
+
+    public var modulesInterceptor: ModulesInterceptor = NoOpModulesInterceptor
 
     internal fun build(): ReportConfig = ReportConfig(
         isHostCorrect = isHostCorrect,
         topSection = topSection,
-        moduleInterceptor = moduleInterceptor,
+        modulesInterceptor = modulesInterceptor,
     )
 }
 
@@ -32,10 +35,10 @@ public class ReportConfigBuilder internal constructor(
  * Represents the configuration of the report generator.
  *
  * @property topSection A text to be displayed at the top of the report, markdown compatible.
- * @property moduleInterceptor Allows modules to be intercepted, modified, or omitted from the report.
+ * @property modulesInterceptor Allows modules to be intercepted, modified, or omitted from the report.
  */
 internal data class ReportConfig(
     val isHostCorrect: Boolean,
     val topSection: String?,
-    val moduleInterceptor: ModuleInterceptor,
+    val modulesInterceptor: ModulesInterceptor,
 )

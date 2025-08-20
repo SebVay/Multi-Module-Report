@@ -13,7 +13,7 @@ import com.sebast.mar.danger.report.info.VersionedFile.Status
 public data class Module(
     val name: String,
     val files: List<VersionedFile>,
-    val isFallback: Boolean,
+    val isFallback: Boolean = false,
 ) {
     internal val createdFiles: List<VersionedFile> by lazy {
         files.filter { it.status == Status.Created }

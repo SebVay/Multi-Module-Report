@@ -40,7 +40,7 @@ public fun DangerDSL.githubModuleReport(
     val getModules = GetModulesImpl(
         danger = dangerWrapper,
         getFiles = getFiles,
-        moduleInterceptor = reportConfig.moduleInterceptor,
+        modulesInterceptor = reportConfig.modulesInterceptor,
     )
 
     val getPullRequest = GetPullRequestImpl(

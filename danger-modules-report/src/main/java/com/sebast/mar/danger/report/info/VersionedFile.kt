@@ -6,8 +6,8 @@ public data class VersionedFile(
     val name: String,
     val fullPath: String,
     val status: Status,
-    val insertions: Int?,
-    val deletions: Int?,
+    val insertions: Int? = null,
+    val deletions: Int? = null,
 ) {
     /**
      * Calculates the SHA-256 hash of the file's full path.
