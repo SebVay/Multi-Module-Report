@@ -1,0 +1,69 @@
+Subject: [PATCH] integration-app Patch that update some files in the modules
+---
+Index: integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/DomainFile.kt
+===================================================================
+diff --git a/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/DomainFile.kt b/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/DomainFile.kt
+deleted file mode 100644
+--- a/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/DomainFile.kt	(revision 8855f3157a33af1d8989249f94d15a7d6ae79f87)
++++ /dev/null	(revision 8855f3157a33af1d8989249f94d15a7d6ae79f87)
+@@ -1,4 +0,0 @@
+-package com.sebast.mar.danger.report.domain
+-
+-class DomainFile {
+-}
+\ No newline at end of file
+Index: integration-app/src/main/java/com/sebast/mar/danger/report/app/ui/ViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/integration-app/src/main/java/com/sebast/mar/danger/report/app/ui/ViewModel.kt b/integration-app/src/main/java/com/sebast/mar/danger/report/app/ui/ViewModel.kt
+new file mode 100644
+--- /dev/null	(date 1755685807465)
++++ b/integration-app/src/main/java/com/sebast/mar/danger/report/app/ui/ViewModel.kt	(date 1755685807465)
+@@ -0,0 +1,3 @@
++package com.sebast.mar.danger.report.app.ui
++
++class ViewModel
+\ No newline at end of file
+Index: integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/NewDomainFile.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/NewDomainFile.kt b/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/NewDomainFile.kt
+new file mode 100644
+--- /dev/null	(date 1755685790011)
++++ b/integration-app/domain/src/main/java/com/sebast/mar/danger/report/domain/NewDomainFile.kt	(date 1755685790011)
+@@ -0,0 +1,5 @@
++package com.sebast.mar.danger.report.domain
++
++class NewDomainFile {
++    fun helloThere() = print("General Kenobi")
++}
+\ No newline at end of file
+Index: integration-app/data/src/main/java/com/sebast/mar/danger/report/data/DataFile.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/integration-app/data/src/main/java/com/sebast/mar/danger/report/data/DataFile.kt b/integration-app/data/src/main/java/com/sebast/mar/danger/report/data/DataFile.kt
+--- a/integration-app/data/src/main/java/com/sebast/mar/danger/report/data/DataFile.kt	(revision 8855f3157a33af1d8989249f94d15a7d6ae79f87)
++++ b/integration-app/data/src/main/java/com/sebast/mar/danger/report/data/DataFile.kt	(date 1755685807473)
+@@ -1,4 +1,15 @@
+ package com.sebast.mar.danger.report.data
+ 
+ class DataFile {
++    fun createFile() {
++        // no-op
++    }
++
++    fun updateFile() {
++        // no-op
++    }
++
++    fun deleteFile() {
++        // no-op
++    }
+ }
+\ No newline at end of file
