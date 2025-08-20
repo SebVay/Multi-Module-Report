@@ -5,7 +5,6 @@ package com.sebast.mar.danger.report
 import com.sebast.mar.danger.report.interceptor.ModulesInterceptor
 import com.sebast.mar.danger.report.interceptor.NoOpModulesInterceptor
 
-
 @DslMarker
 public annotation class ReportDsl
 
@@ -42,7 +41,7 @@ public class ReportConfigBuilder internal constructor(
     public var showCircleIndicators: Boolean = true
 
     /**
-     * Toggles whether line added/removed indicators are displayed to the right of the "Added", "Modified", "Deleted" sections.
+     * Toggles whether the (+/-) ine indicator is displayed to next to the "Added", "Modified", "Deleted" sections.
      * Default value is `true`.
      */
     public var showLineIndicators: Boolean = true
@@ -70,7 +69,7 @@ public class ReportConfigBuilder internal constructor(
  * @property topSection A text to be displayed at the top of the report, markdown compatible.
  * @property linkifyFiles Whether to convert file names to links to their diffs.
  * @property showCircleIndicators Whether to show circle indicators next to file names.
- * @property showLineIndicators Whether to show line added/removed indicators in the header sections.
+ * @property showLineIndicators Whether to show the (+/-) line indicators in the header sections.
  * @property modulesInterceptor Allows modules to be intercepted, modified, or omitted from the report.
  */
 internal data class ReportConfig(

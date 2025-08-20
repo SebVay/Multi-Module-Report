@@ -3,6 +3,8 @@ package com.sebast.mar.danger.report.github
 import com.sebast.mar.danger.report.ReportConfig
 import com.sebast.mar.danger.report.info.PullRequest
 import com.sebast.mar.danger.report.info.VersionedFile
+import com.sebast.mar.danger.report.info.getDeletedLines
+import com.sebast.mar.danger.report.info.getInsertedLines
 import com.sebast.mar.danger.report.internal.GetPullRequest
 import com.sebast.mar.danger.report.internal.helper.table
 import com.sebast.mar.danger.report.internal.helper.td
@@ -44,7 +46,7 @@ internal class GithubReportBuilder(
                     append("Added")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalAdded = "+" + getInsertedLines(createdFiles)
+                        val totalAdded = "+" + createdFiles.getInsertedLines()
 
                         append(" (${totalAdded.greenFlavor()})")
                     }
@@ -56,8 +58,8 @@ internal class GithubReportBuilder(
                     append("Modified")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalAdded = "+" + getInsertedLines(modifiedFiles)
-                        val totalDeleted = "-" + getDeletedLines(modifiedFiles)
+                        val totalAdded = "+" + modifiedFiles.getInsertedLines()
+                        val totalDeleted = "-" + modifiedFiles.getDeletedLines()
 
                         append(" (${totalAdded.greenFlavor()} / ${totalDeleted.redFlavor()})")
                     }
@@ -69,7 +71,7 @@ internal class GithubReportBuilder(
                     append("Deleted")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalDeleted = "-" + getDeletedLines(deletedFiles)
+                        val totalDeleted = "-" + deletedFiles.getDeletedLines()
 
                         append(" (${totalDeleted.redFlavor()})")
                     }
@@ -138,20 +140,6 @@ internal class GithubReportBuilder(
     }
 
     /**
-     * Calculates the total number of inserted lines for files with a specific status.
-     */
-    private fun getInsertedLines(
-        versionedFiles: List<VersionedFile>,
-    ): Int = versionedFiles.sumOf { it.insertions ?: 0 }
-
-    /**
-     * Calculates the total number of deleted lines for files with a specific status.
-     */
-    private fun getDeletedLines(
-        versionedFiles: List<VersionedFile>,
-    ) = versionedFiles.sumOf { it.deletions ?: 0 }
-
-    /**
      * Formats the string to be displayed in green color using LaTeX-like syntax.
      * This syntax is compatible with Github markdown.
      */
@@ -174,7 +162,7 @@ internal class GithubReportBuilder(
      *         The link text will be the `name` of the file.
      */
     private fun PullRequest.getLinkOf(file: VersionedFile): String {
-        return "<a href=\"${this.htmlLink}/files#diff-${file.sha256Path}\">${file.name}</a>"
+        return "<a href=\"$htmlLink/files#diff-${file.sha256Path}\">${file.name}</a>"
     }
 
     companion object {

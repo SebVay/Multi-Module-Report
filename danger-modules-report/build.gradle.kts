@@ -71,16 +71,16 @@ publishing {
             from(components["java"])
             pom {
                 name = "Danger Modules Report"
-                description = "A library for configuring danger reports."
+                description = "A library for generating visually appealing danger module reports."
                 inceptionYear = "2025"
             }
         }
     }
 
     repositories {
-        // Publishing to root project's build directory allows the integration-app module
-        // to reference the compiled artifact locally via file system repository during
-        // Danger script execution, avoiding the need for remote publishing
+        // Publishing to root project's build directory allows the Dangerfile scripts
+        // to reference the compiled artifact locally during the Danger script execution,
+        // avoiding the need for remote publishing or dealing with system dependant .m2 paths (ie. Windows, Unix)
         maven {
             name = "RootProject"
             url = uri("${rootProject.rootDir}/build/local-maven-repository")

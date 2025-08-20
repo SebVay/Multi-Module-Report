@@ -32,3 +32,13 @@ public data class VersionedFile(
         Deleted,
     }
 }
+
+/**
+ * Calculates the total number of inserted lines across all files in the list..
+ */
+internal fun List<VersionedFile>.getInsertedLines(): Int = sumOf { it.insertions ?: 0 }
+
+/**
+ * Calculates the total number of deleted lines across all files in the list..
+ */
+internal fun List<VersionedFile>.getDeletedLines() = sumOf { it.deletions ?: 0 }
