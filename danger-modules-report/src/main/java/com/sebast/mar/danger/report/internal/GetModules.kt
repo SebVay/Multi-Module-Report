@@ -48,7 +48,7 @@ internal class GetModulesImpl(
                 Module(
                     name = name ?: "Others",
                     files = files,
-                    isFallback = name != null,
+                    isFallback = name == null,
                 )
             }
             .sortedBy { !it.isFallback }

@@ -4,15 +4,31 @@
 import com.sebast.mar.danger.report.github.githubModuleReport
 import com.sebast.mar.danger.report.info.Module
 import com.sebast.mar.danger.report.info.VersionedFile
+import com.sebast.mar.danger.report.info.VersionedFile.Status
 import com.sebast.mar.danger.report.interceptor.ModulesInterceptor
 import systems.danger.kotlin.danger
 
 danger(args) {
 
-    // Generate first a report without fixtures
+    // First generate a report with default builder values
     githubModuleReport()
 
-    // Then generate a fixture report
+    // Then generate a report with builder values overridden
+    githubModuleReport {
+        topSection = "# Updated Modules - Overridden builder values"
+        linkifyFiles = false
+        showCircleIndicators = false
+        showLineIndicators = false
+
+        // Override the name of the fallback Module
+        modulesInterceptor = ModulesInterceptor { modules ->
+            modules.map { module ->
+                if (module.isFallback) module.copy(name = "Fallback Module") else module
+            }
+        }
+    }
+
+    // Finally, generate a fixture report
     githubModuleReport {
         topSection = """
             # Fixture data
@@ -29,8 +45,8 @@ danger(args) {
                     Module(
                         name = "fixture",
                         files = listOf(
-                            VersionedFile("File1", "path", VersionedFile.Status.Created, 42),
-                            VersionedFile("File2", "path", VersionedFile.Status.Created, 42),
+                            VersionedFile("File1", "path", Status.Created, 42),
+                            VersionedFile("File2", "path", Status.Created, 42),
                         )
                     ),
                 )
@@ -39,9 +55,9 @@ danger(args) {
                     Module(
                         name = "fixture:data",
                         files = listOf(
-                            VersionedFile("Repository", "path", VersionedFile.Status.Created, 10),
-                            VersionedFile("DataSource", "path", VersionedFile.Status.Modified, 20, 5),
-                            VersionedFile("EntityMapper", "path", VersionedFile.Status.Deleted, deletions = 42),
+                            VersionedFile("Repository", "path", Status.Created, 10),
+                            VersionedFile("DataSource", "path", Status.Modified, 20, 5),
+                            VersionedFile("EntityMapper", "path", Status.Deleted, deletions = 42),
                         )
                     )
                 )
@@ -50,8 +66,8 @@ danger(args) {
                     Module(
                         name = "fixture:domain",
                         files = listOf(
-                            VersionedFile("UseCase", "path", VersionedFile.Status.Modified, 30, 5),
-                            VersionedFile("Interactor", "path", VersionedFile.Status.Modified, 40, 10),
+                            VersionedFile("UseCase", "path", Status.Modified, 30, 5),
+                            VersionedFile("Interactor", "path", Status.Modified, 40, 10),
                         )
                     )
                 )
@@ -60,8 +76,8 @@ danger(args) {
                     Module(
                         name = "fixture:ui",
                         files = listOf(
-                            VersionedFile("ViewModel", "path", VersionedFile.Status.Deleted, deletions = 50),
-                            VersionedFile("Presenter", "path", VersionedFile.Status.Deleted, deletions = 60),
+                            VersionedFile("ViewModel", "path", Status.Deleted, deletions = 50),
+                            VersionedFile("Presenter", "path", Status.Deleted, deletions = 60),
                         )
                     )
                 )

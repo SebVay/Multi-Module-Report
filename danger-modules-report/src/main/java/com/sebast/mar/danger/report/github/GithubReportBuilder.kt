@@ -3,7 +3,6 @@ package com.sebast.mar.danger.report.github
 import com.sebast.mar.danger.report.ReportConfig
 import com.sebast.mar.danger.report.info.PullRequest
 import com.sebast.mar.danger.report.info.VersionedFile
-import com.sebast.mar.danger.report.info.VersionedFile.Status
 import com.sebast.mar.danger.report.internal.GetPullRequest
 import com.sebast.mar.danger.report.internal.helper.table
 import com.sebast.mar.danger.report.internal.helper.td
@@ -41,27 +40,39 @@ internal class GithubReportBuilder(
             th()
 
             if (createdFiles.isNotEmpty()) {
-                val totalAdded = "+" + getInsertedLines(createdFiles, Status.Created)
-
                 th {
-                    append("Added (${totalAdded.greenFlavor()})")
+                    append("Added")
+
+                    if (reportConfig.showLineIndicators) {
+                        val totalAdded = "+" + getInsertedLines(createdFiles)
+
+                        append(" (${totalAdded.greenFlavor()})")
+                    }
                 }
             }
 
             if (modifiedFiles.isNotEmpty()) {
-                val totalAdded = "+" + getInsertedLines(modifiedFiles, Status.Modified)
-                val totalDeleted = "-" + getDeletedLines(modifiedFiles, Status.Modified)
-
                 th {
-                    append("Modified (${totalAdded.greenFlavor()} / ${totalDeleted.redFlavor()})")
+                    append("Modified")
+
+                    if (reportConfig.showLineIndicators) {
+                        val totalAdded = "+" + getInsertedLines(modifiedFiles)
+                        val totalDeleted = "-" + getDeletedLines(modifiedFiles)
+
+                        append(" (${totalAdded.greenFlavor()} / ${totalDeleted.redFlavor()})")
+                    }
                 }
             }
 
             if (deletedFiles.isNotEmpty()) {
-                val totalDeleted = "-" + getDeletedLines(deletedFiles, Status.Deleted)
-
                 th {
-                    append("Deleted (${totalDeleted.redFlavor()})")
+                    append("Deleted")
+
+                    if (reportConfig.showLineIndicators) {
+                        val totalDeleted = "-" + getDeletedLines(deletedFiles)
+
+                        append(" (${totalDeleted.redFlavor()})")
+                    }
                 }
             }
         }
@@ -87,29 +98,38 @@ internal class GithubReportBuilder(
                 }
 
                 if (createdFiles.isNotEmpty()) {
-                    td {
-                        module.createdFiles
-                            .map { file -> pullRequest.getLinkOf(file) }
-                            .forEach { link -> append("🟢&nbsp;$link<br>") }
-                    }
+                    filesColumn(module.createdFiles, "🟢")
                 }
 
                 if (modifiedFiles.isNotEmpty()) {
-                    td {
-                        module.modifiedFiles
-                            .map { file -> pullRequest.getLinkOf(file) }
-                            .forEach { link -> append("🟡&nbsp;$link<br>") }
-                    }
+                    filesColumn(module.modifiedFiles, "🟡")
                 }
 
                 if (deletedFiles.isNotEmpty()) {
-                    td {
-                        module.deletedFiles
-                            .map { file -> pullRequest.getLinkOf(file) }
-                            .forEach { link -> append("🔴&nbsp;$link<br>") }
-                    }
+                    filesColumn(module.deletedFiles, "🔴")
                 }
             }
+        }
+    }
+
+    private fun StringBuilder.filesColumn(
+        moduleFiles: List<VersionedFile>,
+        circleIndicator: String,
+    ) {
+        td {
+            moduleFiles
+                .map { file ->
+                    when (reportConfig.linkifyFiles) {
+                        true -> pullRequest.getLinkOf(file)
+                        false -> file.name
+                    }
+                }
+                .forEach { fileName ->
+                    if (reportConfig.showCircleIndicators) {
+                        append("$circleIndicator&nbsp;")
+                    }
+                    append("$fileName<br>")
+                }
         }
     }
 
@@ -122,20 +142,14 @@ internal class GithubReportBuilder(
      */
     private fun getInsertedLines(
         versionedFiles: List<VersionedFile>,
-        status: Status,
-    ): Int = versionedFiles
-        .filter { it.status == status }
-        .sumOf { it.insertions ?: 0 }
+    ): Int = versionedFiles.sumOf { it.insertions ?: 0 }
 
     /**
      * Calculates the total number of deleted lines for files with a specific status.
      */
     private fun getDeletedLines(
         versionedFiles: List<VersionedFile>,
-        status: Status,
-    ) = versionedFiles
-        .filter { it.status == status }
-        .sumOf { it.deletions ?: 0 }
+    ) = versionedFiles.sumOf { it.deletions ?: 0 }
 
     /**
      * Formats the string to be displayed in green color using LaTeX-like syntax.
