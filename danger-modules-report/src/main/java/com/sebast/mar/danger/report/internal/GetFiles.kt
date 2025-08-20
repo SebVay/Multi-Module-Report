@@ -18,6 +18,11 @@ internal interface GetFiles {
 internal class GetFilesImpl(
     private val commandLine: CommandLine,
 ) : GetFiles {
+
+    private val regex by lazy {
+        """1 file changed, (?:(\d+)\s+insertions\(\+\))?(?:,\s*)?(?:(\d+)\s+deletions\(-\))?""".toRegex()
+    }
+
     override operator fun invoke(
         files: List<FilePath>,
         status: Status,
@@ -28,9 +33,7 @@ internal class GetFilesImpl(
             val fullPath = filePath.removePrefix("'a/' --dst-prefix='b/'")
             val fileName = fullPath.substringAfterLast("/")
 
-            val regex =
-                """1 file changed, (?:(\d+)\s+insertions\(\+\))?(?:,\s*)?(?:(\d+)\s+deletions\(-\))?""".toRegex()
-            val diffShortStat = commandLine.exec("git diff --shortstat origin/main -- $projectRoot$fullPath")
+            val diffShortStat = commandLine.exec("git diff --shortstat origin/main -- $projectRoot/$fullPath")
 
             val (insertions, deletions) = regex.find(diffShortStat).let { match ->
                 val insertions = match?.groups?.get(1)?.value?.toIntOrNull()
