@@ -18,10 +18,10 @@ echo "${green}Publishing 'danger-modules-report' at build/local-maven-repository
 ./gradlew danger-modules-report:publishAllPublicationsToRootProjectRepository
 
 # Clean any previous temp container used for extracting output
-docker rm local-danger-report-image >/dev/null 2>&1 || true
+docker rm danger-module-report-image >/dev/null 2>&1 || true
 
-docker build -f integration-app/danger/local/Dockerfile -t local-danger-report-image . || {
-    echo "${yellow}Error: Docker build failed for image 'local-danger-report-image'."
+docker build -f integration-app/danger/local/Dockerfile -t danger-module-report-image . || {
+    echo "${yellow}Error: Docker build failed for image 'danger-module-report-image'."
     echo "One of the reasons may be that your docker engine is not running.${reset}"
     read -n 1 -s -r -p "Press any key to exit."
     exit 1

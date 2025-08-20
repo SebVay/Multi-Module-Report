@@ -57,7 +57,7 @@ tasks.register("codeQualityCheck") {
     group = "verification"
     description = "Runs Spotless and Detekt"
 
-    dependsOn("spotlessApply", "detekt")
+    dependsOn("spotlessCheck", "detekt")
 }
 
 

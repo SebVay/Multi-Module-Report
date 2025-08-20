@@ -19,7 +19,7 @@ internal class GithubReportBuilder(
     private val writer = StringBuilder()
 
     override fun sections(): Unit = with(writer) {
-        if (reportConfig.isHostIncorrect) {
+        if (reportConfig.isHostCorrect.not()) {
             appendLine(INCORRECT_HOST_WARNING)
         }
 
@@ -166,8 +166,8 @@ internal class GithubReportBuilder(
     companion object {
         private val INCORRECT_HOST_WARNING = """
             🚧🚧🚧
-            ### githubModuleReport has been called outside a Github context.
-            - Use it only for local testing, some functionalities or html link could be missing.
+            ### `githubModuleReport` has been called outside a Github context.
+            Use it only for local testing, some functionalities or html link could be missing.
             🚧🚧🚧
         """.trimIndent()
     }

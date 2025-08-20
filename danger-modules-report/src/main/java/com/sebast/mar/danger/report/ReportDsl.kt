@@ -22,7 +22,7 @@ public class ReportConfigBuilder internal constructor(
     public var moduleInterceptor: ModuleInterceptor = NoOpModuleInterceptor
 
     internal fun build(): ReportConfig = ReportConfig(
-        isHostIncorrect = isHostCorrect,
+        isHostCorrect = isHostCorrect,
         topSection = topSection,
         moduleInterceptor = moduleInterceptor,
     )
@@ -35,7 +35,7 @@ public class ReportConfigBuilder internal constructor(
  * @property moduleInterceptor Allows modules to be intercepted, modified, or omitted from the report.
  */
 internal data class ReportConfig(
-    val isHostIncorrect: Boolean,
+    val isHostCorrect: Boolean,
     val topSection: String?,
     val moduleInterceptor: ModuleInterceptor,
 )
