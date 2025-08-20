@@ -9,25 +9,28 @@ import systems.danger.kotlin.danger
 
 danger(args) {
 
+    // Generate first a report without fixtures
+    githubModuleReport()
+
+    // Then generate a fixture report
     githubModuleReport {
         topSection = """
-            # Heads up: Fixture data included
-            This Danger report intentionally includes some fixture to showcase the current changes in the reporting capabilities.
-            Please do not treat these as real findings or required actions.
+            # Fixture data
+            The following report intentionally includes some fixture to showcase the reporting capabilities.
+            - Any code changes made in your current PR will be reflected here.
+            - Please do not treat these as real findings or required actions.
             
             Reviewers: use this report to evaluate the table formatting alongside the code changes.
         """.trimIndent()
 
         modulesInterceptor = ModulesInterceptor {
-            // Only add fixture data to the report
             buildList {
                 add(
                     Module(
                         name = "fixture",
                         files = listOf(
                             VersionedFile("File1", "path", VersionedFile.Status.Created, 42),
-                            VersionedFile("File2", "path", VersionedFile.Status.Modified, 42, 42),
-                            VersionedFile("File3", "path", VersionedFile.Status.Deleted, null, 42),
+                            VersionedFile("File2", "path", VersionedFile.Status.Created, 42),
                         )
                     ),
                 )
@@ -37,7 +40,8 @@ danger(args) {
                         name = "fixture:data",
                         files = listOf(
                             VersionedFile("Repository", "path", VersionedFile.Status.Created, 10),
-                            VersionedFile("DataSource", "path", VersionedFile.Status.Created, 20),
+                            VersionedFile("DataSource", "path", VersionedFile.Status.Modified, 20, 5),
+                            VersionedFile("EntityMapper", "path", VersionedFile.Status.Deleted, deletions = 42),
                         )
                     )
                 )
