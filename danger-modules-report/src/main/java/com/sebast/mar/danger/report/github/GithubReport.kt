@@ -13,13 +13,6 @@ import systems.danger.kotlin.models.danger.DangerDSL
 /**
  * Generates a GitHub comment with a report of the modules that have been modified in a pull request.
  *
- * This function orchestrates the report generation by:
- * 1. Creating wrappers for Danger context and command line operations
- * 2. Building report configuration from provided options
- * 3. Setting up file, module and pull request retrievers
- * 4. Initializing the report writer
- * 5. Generating and writing the final report
- *
  * @receiver The [DangerDSL] instance, providing access to Danger's functionalities.
  * @param block A lambda with [ReportConfigBuilder] receiver to configure report generation.
  *             Can be used to customize:
@@ -56,9 +49,10 @@ public fun DangerDSL.githubModuleReport(
         getPullRequest = getPullRequest,
     )
 
-    DangerReport(
+    val dangerReport = DangerReport(
         reportBuilder = reportWriter,
         dangerWriter = dangerWriter,
     )
-        .writeReport()
+
+    dangerReport.writeReport()
 }
