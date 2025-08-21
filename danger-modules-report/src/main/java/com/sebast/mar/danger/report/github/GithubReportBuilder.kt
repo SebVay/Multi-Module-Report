@@ -19,7 +19,7 @@ internal class GithubReportBuilder(
 
     private val writer = StringBuilder()
 
-    override fun sections(): Unit = with(writer) {
+    override fun topSection() = with(writer) {
         if (reportConfig.isHostCorrect.not()) {
             appendLine(INCORRECT_HOST_WARNING)
         }
@@ -29,11 +29,17 @@ internal class GithubReportBuilder(
         }
     }
 
+    override fun bottomSection() = with(writer) {
+        if (reportConfig.bottomSection != null) {
+            appendLine(reportConfig.bottomSection)
+        }
+    }
+
     override fun table(block: () -> Unit) {
         writer.table(block)
     }
 
-    override fun headerRow(): Unit = with(writer) {
+    override fun headerRow() = with(writer) {
         val createdFiles = pullRequest.createdFiles
         val modifiedFiles = pullRequest.modifiedFiles
         val deletedFiles = pullRequest.deletedFiles
@@ -87,7 +93,7 @@ internal class GithubReportBuilder(
      * and removed files with a red circle.
      * Each file is linked to its corresponding URL.
      */
-    override fun moduleRows(): Unit = with(writer) {
+    override fun moduleRows() = with(writer) {
         val modules = pullRequest.modules
         val createdFiles = pullRequest.createdFiles
         val modifiedFiles = pullRequest.modifiedFiles

@@ -13,9 +13,10 @@ danger(args) {
     // First generate a report with default builder values
     githubModuleReport()
 
-    // Then generate a report with builder values overridden
+    // Then generate a report with the builder DSL
     githubModuleReport {
-        topSection = "# Updated Modules - Overridden builder values"
+        topSection = "<details><summary>Updated Modules using builder DSL</summary>"
+        bottomSection = "</details>"
         linkifyFiles = false
         showCircleIndicators = false
         showLineIndicators = false

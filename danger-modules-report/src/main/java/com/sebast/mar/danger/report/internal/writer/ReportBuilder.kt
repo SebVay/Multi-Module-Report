@@ -21,9 +21,14 @@ internal abstract class ReportBuilder(
     /**
      * Writes the top section of the report if it exists.
      * If the top section in reportConfig is null or empty, nothing will be written.
-     * The section content is appended directly to the writer without any modifications.
      */
-    abstract fun sections()
+    abstract fun topSection()
+
+    /**
+     * Writes the bottom section of the report if it exists.
+     * If the bottom section in reportConfig is null or empty, nothing will be written.
+     */
+    abstract fun bottomSection()
 
     /**
      * Writes an HTML table to the report.

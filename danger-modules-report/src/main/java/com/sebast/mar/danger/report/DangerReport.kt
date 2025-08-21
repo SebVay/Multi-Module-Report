@@ -17,13 +17,15 @@ public class DangerReport internal constructor(
 ) {
     public fun writeReport() {
         with(reportBuilder) {
-            sections()
+            topSection()
 
             table {
                 headerRow()
 
                 moduleRows()
             }
+
+            bottomSection()
         }
 
         dangerWriter.writeMarkdown(reportBuilder.build())

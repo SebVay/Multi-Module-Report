@@ -28,6 +28,15 @@ public class ReportConfigBuilder internal constructor(
     public var topSection: String? = "# Updated Modules"
 
     /**
+     * A text to be displayed at the bottom of the report, markdown compatible.
+     *
+     * By default: `null` (no bottom section will be displayed)
+     *
+     * If set to a String, this text will be displayed at the bottom of the report.
+     */
+    public var bottomSection: String? = null
+
+    /**
      * Determines whether links to the diff page for each file are added to the report.
      * When `true`, links are added. When `false`, links are omitted.
      * Defaults to `true`.
@@ -56,6 +65,7 @@ public class ReportConfigBuilder internal constructor(
     internal fun build(): ReportConfig = ReportConfig(
         isHostCorrect = isHostCorrect,
         topSection = topSection,
+        bottomSection = bottomSection,
         linkifyFiles = linkifyFiles,
         showCircleIndicators = showCircleIndicators,
         showLineIndicators = showLineIndicators,
@@ -66,7 +76,10 @@ public class ReportConfigBuilder internal constructor(
 /**
  * Represents the configuration of the report generator.
  *
+ * @property isHostCorrect Indicates whether the host environment is correctly configured
+ *                         for certain features (e.g., linking files).
  * @property topSection A text to be displayed at the top of the report, markdown compatible.
+ * @property bottomSection A text to be displayed at the bottom of the report, markdown compatible.
  * @property linkifyFiles Whether to convert file names to links to their diffs.
  * @property showCircleIndicators Whether to show circle indicators next to file names.
  * @property showLineIndicators Whether to show the (+/-) line indicators in the header sections.
@@ -75,6 +88,7 @@ public class ReportConfigBuilder internal constructor(
 internal data class ReportConfig(
     val isHostCorrect: Boolean,
     val topSection: String?,
+    val bottomSection: String?,
     val linkifyFiles: Boolean,
     val showCircleIndicators: Boolean,
     val showLineIndicators: Boolean,

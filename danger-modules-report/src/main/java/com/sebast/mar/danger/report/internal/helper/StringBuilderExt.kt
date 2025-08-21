@@ -19,7 +19,7 @@ internal fun StringBuilder.th(block: () -> Unit = {}) {
 }
 
 internal fun StringBuilder.table(block: () -> Unit = {}) {
-    append("<table>")
+    appendLine("<table>")
     block()
-    append("</table>")
+    appendLine("</table>")
 }
