@@ -6,8 +6,6 @@ COPY . /code
 # Ensure `master` exists for local Danger evaluation (from origin/main)
 RUN git branch master origin/main
 
-WORKDIR /code/integration-app/danger/
+WORKDIR /code/danger/local
 
-# Execute Danger and move the resulting JSON to a well-known output path
 RUN danger-kotlin local
-#RUN mkdir -p /output && mv danger_out.json /output/

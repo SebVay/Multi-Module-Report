@@ -17,26 +17,34 @@ internal interface GetFiles {
 
 internal class GetFilesImpl(
     private val commandLine: CommandLine,
+    private val runShortStatCommand: Boolean,
 ) : GetFiles {
+
+    private val regex by lazy {
+        """1 file changed, (?:(\d+)\s+insertions\(\+\))?(?:,\s*)?(?:(\d+)\s+deletions\(-\))?""".toRegex()
+    }
+
+    private val projectRoot by lazy {
+        commandLine.exec("git rev-parse --show-toplevel").trim()
+    }
+
     override operator fun invoke(
         files: List<FilePath>,
         status: Status,
     ): List<VersionedFile> {
-        val projectRoot = commandLine.exec("git rev-parse --show-toplevel").trim()
-
         return files.map { filePath ->
             val fullPath = filePath.removePrefix("'a/' --dst-prefix='b/'")
             val fileName = fullPath.substringAfterLast("/")
+            var insertions: Int? = null
+            var deletions: Int? = null
 
-            val regex =
-                """1 file changed, (?:(\d+)\s+insertions\(\+\))?(?:,\s*)?(?:(\d+)\s+deletions\(-\))?""".toRegex()
-            val diffShortStat = commandLine.exec("git diff --shortstat origin/main -- $projectRoot$fullPath")
+            if (runShortStatCommand) {
+                val diffShortStat = commandLine.exec("git diff --shortstat origin/main -- $projectRoot/$fullPath")
 
-            val (insertions, deletions) = regex.find(diffShortStat).let { match ->
-                val insertions = match?.groups?.get(1)?.value?.toIntOrNull()
-                val deletions = match?.groups?.get(2)?.value?.toIntOrNull()
+                val match = regex.find(diffShortStat)
 
-                insertions to deletions
+                insertions = match?.groups?.get(1)?.value?.toIntOrNull()
+                deletions = match?.groups?.get(2)?.value?.toIntOrNull()
             }
 
             VersionedFile(

@@ -5,7 +5,7 @@ import com.sebast.mar.danger.report.info.VersionedFile
 import com.sebast.mar.danger.report.info.VersionedFile.Status.Created
 import com.sebast.mar.danger.report.info.VersionedFile.Status.Deleted
 import com.sebast.mar.danger.report.info.VersionedFile.Status.Modified
-import com.sebast.mar.danger.report.interceptor.ModuleInterceptor
+import com.sebast.mar.danger.report.interceptor.ModulesInterceptor
 import com.sebast.mar.danger.report.internal.helper.DangerWrapper
 
 /**
@@ -25,7 +25,7 @@ internal interface GetModules {
 internal class GetModulesImpl(
     private val danger: DangerWrapper,
     private val getFiles: GetFiles,
-    private val moduleInterceptor: ModuleInterceptor,
+    private val modulesInterceptor: ModulesInterceptor,
 ) : GetModules {
     override fun invoke(): List<Module> {
         val createdFiles = getFiles(danger.createdFiles(), Created)
@@ -33,6 +33,7 @@ internal class GetModulesImpl(
         val deletedFiles = getFiles(danger.deletedFiles(), Deleted)
 
         return createModulesFromFiles(createdFiles + modifiedFiles + deletedFiles)
+            .let(modulesInterceptor::intercept)
     }
 
     private fun createModulesFromFiles(files: List<VersionedFile>): List<Module> {
@@ -47,10 +48,9 @@ internal class GetModulesImpl(
                 Module(
                     name = name ?: "Others",
                     files = files,
-                    isFallback = name != null,
+                    isFallback = name == null,
                 )
             }
             .sortedBy { !it.isFallback }
-            .mapNotNull(moduleInterceptor::intercept)
     }
 }

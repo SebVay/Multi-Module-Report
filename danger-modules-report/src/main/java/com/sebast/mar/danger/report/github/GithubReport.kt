@@ -35,12 +35,15 @@ public fun DangerDSL.githubModuleReport(
     val commandLine = CommandLineImpl(this)
     val reportConfig = ReportConfigBuilder(isHostCorrect = onGitHub).apply(block).build()
 
-    val getFiles = GetFilesImpl(commandLine)
+    val getFiles = GetFilesImpl(
+        commandLine = commandLine,
+        runShortStatCommand = reportConfig.showLineIndicators,
+    )
 
     val getModules = GetModulesImpl(
         danger = dangerWrapper,
         getFiles = getFiles,
-        moduleInterceptor = reportConfig.moduleInterceptor,
+        modulesInterceptor = reportConfig.modulesInterceptor,
     )
 
     val getPullRequest = GetPullRequestImpl(
