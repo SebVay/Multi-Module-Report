@@ -51,6 +51,6 @@ internal class GetModulesImpl(
                     isFallback = name == null,
                 )
             }
-            .sortedBy { !it.isFallback }
+            .sortedBy { it.isFallback }
     }
 }
