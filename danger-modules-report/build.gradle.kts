@@ -9,6 +9,9 @@ plugins {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 kotlin {
@@ -57,7 +60,7 @@ tasks.register("codeQualityCheck") {
     group = "verification"
     description = "Runs Spotless and Detekt"
 
-    dependsOn("spotlessCheck", "detekt")
+    dependsOn("spotlessCheck", "detektMain")
 }
 
 
@@ -71,8 +74,24 @@ publishing {
             from(components["java"])
             pom {
                 name = "Danger Modules Report"
+                url = "https://github.com/SebVay/Danger-Module-Report/"
                 description = "A library for generating visually appealing danger module reports."
                 inceptionYear = "2025"
+
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://github.com/SebVay/Danger-Module-Report/blob/main/LICENSE"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "SebVay"
+                        name = "Sébastien Martin"
+                        email = "sebast.mar@gmail.com"
+                    }
+                }
             }
         }
     }
