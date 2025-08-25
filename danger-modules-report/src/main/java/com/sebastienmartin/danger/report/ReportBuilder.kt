@@ -1,7 +1,8 @@
-package com.sebastienmartin.danger.report.internal.writer
+package com.sebastienmartin.danger.report
 
 import com.sebastienmartin.danger.report.info.PullRequest
 import com.sebastienmartin.danger.report.internal.GetPullRequest
+import com.sebastienmartin.danger.report.internal.SkipReport
 
 /**
  * Abstract base class for writing reports.
@@ -15,8 +16,9 @@ import com.sebastienmartin.danger.report.internal.GetPullRequest
 internal abstract class ReportBuilder(
     private val getPullRequest: GetPullRequest,
 ) {
+    protected val writer = StringBuilder()
 
-    protected val pullRequest: com.sebastienmartin.danger.report.info.PullRequest by lazy { getPullRequest() }
+    protected val pullRequest: PullRequest by lazy { getPullRequest() }
 
     /**
      * Writes the top section of the report if it exists.
@@ -52,5 +54,10 @@ internal abstract class ReportBuilder(
      */
     abstract fun moduleRows()
 
-    abstract fun build(): String
+    /**
+     * Builds the final report string.
+     *
+     * @return The complete report as a String.
+     */
+    fun build(): String = writer.toString()
 }

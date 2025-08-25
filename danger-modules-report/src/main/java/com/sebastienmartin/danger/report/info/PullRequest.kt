@@ -2,7 +2,7 @@ package com.sebastienmartin.danger.report.info
 
 import com.sebastienmartin.danger.report.info.VersionedFile.Status
 
-public data class PullRequest(
+internal data class PullRequest(
     val htmlLink: String,
     val modules: List<Module>,
 ) {

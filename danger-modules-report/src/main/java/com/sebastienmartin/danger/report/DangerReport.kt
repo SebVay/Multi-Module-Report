@@ -1,7 +1,7 @@
 package com.sebastienmartin.danger.report
 
-import com.sebastienmartin.danger.report.internal.writer.DangerWriter
-import com.sebastienmartin.danger.report.internal.writer.ReportBuilder
+import com.sebastienmartin.danger.report.internal.SkipReport
+import com.sebastienmartin.danger.report.internal.helper.DangerWriter
 
 /**
  * Represents a danger report that can be generated.
@@ -11,11 +11,12 @@ import com.sebastienmartin.danger.report.internal.writer.ReportBuilder
  *
  * @property reportBuilder The [ReportBuilder] used to output the report content.
  */
-public class DangerReport internal constructor(
+internal class DangerReport internal constructor(
     private val reportBuilder: ReportBuilder,
     private val dangerWriter: DangerWriter,
-) {
-    public fun writeReport() {
+    skipReport: SkipReport,
+) : Report(skipReport) {
+    override fun writeReport() {
         with(reportBuilder) {
             topSection()
 

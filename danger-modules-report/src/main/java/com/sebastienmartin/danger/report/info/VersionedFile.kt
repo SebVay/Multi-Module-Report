@@ -41,4 +41,4 @@ internal fun List<VersionedFile>.getInsertedLines(): Int = sumOf { it.insertions
 /**
  * Calculates the total number of deleted lines across all files in the list..
  */
-internal fun List<VersionedFile>.getDeletedLines() = sumOf { it.deletions ?: 0 }
+internal fun List<VersionedFile>.getDeletedLines(): Int = sumOf { it.deletions ?: 0 }

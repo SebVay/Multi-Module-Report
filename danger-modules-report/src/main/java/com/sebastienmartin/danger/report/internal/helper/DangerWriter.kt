@@ -1,4 +1,4 @@
-package com.sebastienmartin.danger.report.internal.writer
+package com.sebastienmartin.danger.report.internal.helper
 
 import systems.danger.kotlin.markdown
 

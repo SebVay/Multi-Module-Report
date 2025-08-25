@@ -1,13 +1,21 @@
 package com.sebastienmartin.danger.report.github
 
 import com.sebastienmartin.danger.report.DangerReport
+import com.sebastienmartin.danger.report.Report
+import com.sebastienmartin.danger.report.ReportBuilder
 import com.sebastienmartin.danger.report.ReportConfigBuilder
+import com.sebastienmartin.danger.report.internal.GetFiles
 import com.sebastienmartin.danger.report.internal.GetFilesImpl
+import com.sebastienmartin.danger.report.internal.GetModules
 import com.sebastienmartin.danger.report.internal.GetModulesImpl
+import com.sebastienmartin.danger.report.internal.GetPullRequest
 import com.sebastienmartin.danger.report.internal.GetPullRequestImpl
+import com.sebastienmartin.danger.report.internal.SkipReportImpl
+import com.sebastienmartin.danger.report.internal.helper.CommandLine
 import com.sebastienmartin.danger.report.internal.helper.CommandLineImpl
 import com.sebastienmartin.danger.report.internal.helper.DangerWrapper
-import com.sebastienmartin.danger.report.internal.writer.DangerWriterImpl
+import com.sebastienmartin.danger.report.internal.helper.DangerWriter
+import com.sebastienmartin.danger.report.internal.helper.DangerWriterImpl
 import systems.danger.kotlin.models.danger.DangerDSL
 
 /**
@@ -23,36 +31,37 @@ import systems.danger.kotlin.models.danger.DangerDSL
 public fun DangerDSL.githubModuleReport(
     block: ReportConfigBuilder.() -> Unit = {},
 ) {
-    val dangerWriter = DangerWriterImpl()
+    val dangerWriter: DangerWriter = DangerWriterImpl()
     val dangerWrapper = DangerWrapper(this)
-    val commandLine = CommandLineImpl(this)
+    val commandLine: CommandLine = CommandLineImpl(this)
     val reportConfig = ReportConfigBuilder(isHostCorrect = onGitHub).apply(block).build()
 
-    val getFiles = GetFilesImpl(
+    val getFiles: GetFiles = GetFilesImpl(
         commandLine = commandLine,
         runShortStatCommand = reportConfig.showLineIndicators,
     )
 
-    val getModules = GetModulesImpl(
+    val getModules: GetModules = GetModulesImpl(
         danger = dangerWrapper,
         getFiles = getFiles,
         modulesInterceptor = reportConfig.modulesInterceptor,
     )
 
-    val getPullRequest = GetPullRequestImpl(
+    val getPullRequest: GetPullRequest = GetPullRequestImpl(
         danger = dangerWrapper,
         getModules = getModules,
     )
 
-    val reportWriter = GithubReportBuilder(
+    val reportBuilder: ReportBuilder = GithubReportBuilder(
         reportConfig = reportConfig,
         getPullRequest = getPullRequest,
     )
 
-    val dangerReport = DangerReport(
-        reportBuilder = reportWriter,
+    val dangerReport: Report = DangerReport(
+        reportBuilder = reportBuilder,
         dangerWriter = dangerWriter,
+        skipReport = SkipReportImpl(dangerWrapper, reportConfig),
     )
 
-    dangerReport.writeReport()
+    dangerReport.write()
 }

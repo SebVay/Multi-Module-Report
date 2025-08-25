@@ -1,6 +1,6 @@
 package com.sebastienmartin.danger.report.helper
 
-import com.sebastienmartin.danger.report.internal.writer.DangerWriterImpl
+import com.sebastienmartin.danger.report.internal.helper.DangerWriterImpl
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll

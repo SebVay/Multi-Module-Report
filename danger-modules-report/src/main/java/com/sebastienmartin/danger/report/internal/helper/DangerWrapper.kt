@@ -33,10 +33,16 @@ internal class DangerWrapper(
      * @return The HTML URL of the pull request.
      */
     internal fun htmlLink(): String {
-        return if (dangerContext.onGitHub) {
-            dangerContext.github.pullRequest.htmlURL
-        } else {
-            "127.0.0.1"
+        return when {
+            dangerContext.onGitHub -> dangerContext.github.pullRequest.htmlURL
+            else -> "127.0.0.1"
+        }
+    }
+
+    fun prBody(): String {
+        return when {
+            dangerContext.onGitHub -> dangerContext.github.pullRequest.body.orEmpty()
+            else -> ""
         }
     }
 }

@@ -1,23 +1,22 @@
 package com.sebastienmartin.danger.report.github
 
+import com.sebastienmartin.danger.report.ReportBuilder
 import com.sebastienmartin.danger.report.ReportConfig
 import com.sebastienmartin.danger.report.info.PullRequest
 import com.sebastienmartin.danger.report.info.VersionedFile
 import com.sebastienmartin.danger.report.info.getDeletedLines
 import com.sebastienmartin.danger.report.info.getInsertedLines
 import com.sebastienmartin.danger.report.internal.GetPullRequest
+import com.sebastienmartin.danger.report.internal.SkipReport
 import com.sebastienmartin.danger.report.internal.helper.table
 import com.sebastienmartin.danger.report.internal.helper.td
 import com.sebastienmartin.danger.report.internal.helper.th
 import com.sebastienmartin.danger.report.internal.helper.tr
-import com.sebastienmartin.danger.report.internal.writer.ReportBuilder
 
 internal class GithubReportBuilder(
     private val reportConfig: ReportConfig,
     getPullRequest: GetPullRequest,
 ) : ReportBuilder(getPullRequest) {
-
-    private val writer = StringBuilder()
 
     override fun topSection() = with(writer) {
         if (reportConfig.isHostCorrect.not()) {
@@ -141,10 +140,6 @@ internal class GithubReportBuilder(
         }
     }
 
-    override fun build(): String {
-        return writer.toString()
-    }
-
     /**
      * Formats the string to be displayed in green color using LaTeX-like syntax.
      * This syntax is compatible with Github markdown.
@@ -167,7 +162,7 @@ internal class GithubReportBuilder(
      * @return An HTML `<a>` tag string that links to the file diff on GitHub.
      *         The link text will be the `name` of the file.
      */
-    private fun com.sebastienmartin.danger.report.info.PullRequest.getLinkOf(file: VersionedFile): String {
+    private fun PullRequest.getLinkOf(file: VersionedFile): String {
         return "<a href=\"$htmlLink/files#diff-${file.sha256Path}\">${file.name}</a>"
     }
 
