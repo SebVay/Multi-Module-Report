@@ -1,6 +1,6 @@
-package com.sebastienmartin.danger.report
+package com.sebastienmartin.danger.report.internal
 
-import com.sebastienmartin.danger.report.internal.SkipReport
+import com.sebastienmartin.danger.report.internal.domain.SkipReport
 import com.sebastienmartin.danger.report.internal.helper.DangerWriter
 
 /**

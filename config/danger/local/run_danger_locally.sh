@@ -7,7 +7,7 @@ reset=$(tput sgr0)
 script_path="$(cd "$(dirname "$0")" && pwd)"
 
 # Set project root directory one level up from script path
-project_root="$script_path"/../..
+project_root="$script_path"/../../..
 
 # Change to project root directory
 cd "$project_root" || exit
@@ -20,7 +20,7 @@ echo "${green}Publishing 'danger-modules-report' at build/local-maven-repository
 # Clean any previous temp container used for extracting output
 docker rm danger-module-report-image >/dev/null 2>&1 || true
 
-docker build -f danger/local/Dockerfile -t danger-module-report-image . || {
+docker build -f config/danger/local/Dockerfile -t danger-module-report-image . || {
     echo "${yellow}Error: Docker build failed for image 'danger-module-report-image'."
     echo "One of the reasons may be that your docker engine is not running.${reset}"
     read -n 1 -s -r -p "Press any key to exit."

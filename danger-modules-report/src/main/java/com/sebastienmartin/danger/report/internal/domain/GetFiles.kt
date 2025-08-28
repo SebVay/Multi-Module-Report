@@ -1,8 +1,7 @@
-package com.sebastienmartin.danger.report.internal
+package com.sebastienmartin.danger.report.internal.domain
 
 import com.sebastienmartin.danger.report.info.VersionedFile
 import com.sebastienmartin.danger.report.info.VersionedFile.Status
-import com.sebastienmartin.danger.report.internal.helper.CommandLine
 import systems.danger.kotlin.models.git.FilePath
 
 /**

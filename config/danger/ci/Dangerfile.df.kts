@@ -1,7 +1,7 @@
-@file:Repository("file:../../build/local-maven-repository")
+@file:Repository("file:../../../build/local-maven-repository")
 @file:DependsOn("com.sebastienmartin:danger-modules-report:[0,)")
 
-import com.sebastienmartin.danger.report.github.githubModuleReport
+import com.sebastienmartin.danger.report.githubModuleReport
 import com.sebastienmartin.danger.report.info.Module
 import com.sebastienmartin.danger.report.info.VersionedFile
 import com.sebastienmartin.danger.report.info.VersionedFile.Status
@@ -20,7 +20,7 @@ danger(args) {
             The following report intentionally includes some fixture to showcase the reporting capabilities.
             - Any code changes made in your current PR will be reflected here.
             - Please do not treat these as real findings or required actions.
-            
+
             Reviewers: use this report to evaluate the table formatting alongside the code changes.
         """.trimIndent()
 
@@ -38,7 +38,7 @@ private fun fixtureModules() = listOf(
         files = listOf(
             VersionedFile("File1", "path", Status.Created, 42),
             VersionedFile("File2", "path", Status.Created, 42),
-        )
+        ),
     ),
     Module(
         name = "fixture:data",
@@ -46,20 +46,20 @@ private fun fixtureModules() = listOf(
             VersionedFile("Repository", "path", Status.Created, 10),
             VersionedFile("DataSource", "path", Status.Modified, 20, 5),
             VersionedFile("EntityMapper", "path", Status.Deleted, deletions = 42),
-        )
+        ),
     ),
     Module(
         name = "fixture:domain",
         files = listOf(
             VersionedFile("UseCase", "path", Status.Modified, 30, 5),
             VersionedFile("Interactor", "path", Status.Modified, 40, 10),
-        )
+        ),
     ),
     Module(
         name = "fixture:ui",
         files = listOf(
             VersionedFile("ViewModel", "path", Status.Deleted, deletions = 50),
             VersionedFile("Presenter", "path", Status.Deleted, deletions = 60),
-        )
-    )
+        ),
+    ),
 )

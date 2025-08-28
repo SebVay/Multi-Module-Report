@@ -1,4 +1,4 @@
-package com.sebastienmartin.danger.report.internal.helper
+package com.sebastienmartin.danger.report.internal.ext
 
 internal fun StringBuilder.tr(block: () -> Unit = {}) {
     append("<tr>")

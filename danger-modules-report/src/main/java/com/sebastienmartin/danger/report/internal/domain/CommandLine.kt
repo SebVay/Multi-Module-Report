@@ -1,6 +1,4 @@
-package com.sebastienmartin.danger.report.internal.helper
-
-import systems.danger.kotlin.models.danger.DangerDSL
+package com.sebastienmartin.danger.report.internal.domain
 
 /**
  * Represents a command line interface for executing shell commands.
@@ -17,13 +15,4 @@ internal interface CommandLine {
         command: String,
         arguments: List<String> = emptyList(),
     ): String
-}
-
-internal class CommandLineImpl(
-    private val dangerContext: DangerDSL,
-) : CommandLine {
-    override fun exec(
-        command: String,
-        arguments: List<String>,
-    ): String = dangerContext.utils.exec(command, arguments)
 }

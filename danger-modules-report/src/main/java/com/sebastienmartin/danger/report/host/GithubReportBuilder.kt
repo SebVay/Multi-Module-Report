@@ -1,17 +1,16 @@
-package com.sebastienmartin.danger.report.github
+package com.sebastienmartin.danger.report.host
 
-import com.sebastienmartin.danger.report.ReportBuilder
 import com.sebastienmartin.danger.report.ReportConfig
 import com.sebastienmartin.danger.report.info.PullRequest
 import com.sebastienmartin.danger.report.info.VersionedFile
 import com.sebastienmartin.danger.report.info.getDeletedLines
 import com.sebastienmartin.danger.report.info.getInsertedLines
-import com.sebastienmartin.danger.report.internal.GetPullRequest
-import com.sebastienmartin.danger.report.internal.SkipReport
-import com.sebastienmartin.danger.report.internal.helper.table
-import com.sebastienmartin.danger.report.internal.helper.td
-import com.sebastienmartin.danger.report.internal.helper.th
-import com.sebastienmartin.danger.report.internal.helper.tr
+import com.sebastienmartin.danger.report.internal.ReportBuilder
+import com.sebastienmartin.danger.report.internal.domain.GetPullRequest
+import com.sebastienmartin.danger.report.internal.ext.table
+import com.sebastienmartin.danger.report.internal.ext.td
+import com.sebastienmartin.danger.report.internal.ext.th
+import com.sebastienmartin.danger.report.internal.ext.tr
 
 internal class GithubReportBuilder(
     private val reportConfig: ReportConfig,
@@ -39,44 +38,40 @@ internal class GithubReportBuilder(
     }
 
     override fun headerRow() = with(writer) {
-        val createdFiles = pullRequest.createdFiles
-        val modifiedFiles = pullRequest.modifiedFiles
-        val deletedFiles = pullRequest.deletedFiles
-
         tr {
             th()
 
-            if (createdFiles.isNotEmpty()) {
+            if (pullRequest.createdFiles.isNotEmpty()) {
                 th {
                     append("Added")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalAdded = "+" + createdFiles.getInsertedLines()
+                        val totalAdded = "+" + pullRequest.createdFiles.getInsertedLines()
 
                         append(" (${totalAdded.greenFlavor()})")
                     }
                 }
             }
 
-            if (modifiedFiles.isNotEmpty()) {
+            if (pullRequest.modifiedFiles.isNotEmpty()) {
                 th {
                     append("Modified")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalAdded = "+" + modifiedFiles.getInsertedLines()
-                        val totalDeleted = "-" + modifiedFiles.getDeletedLines()
+                        val totalAdded = "+" + pullRequest.modifiedFiles.getInsertedLines()
+                        val totalDeleted = "-" + pullRequest.modifiedFiles.getDeletedLines()
 
                         append(" (${totalAdded.greenFlavor()} / ${totalDeleted.redFlavor()})")
                     }
                 }
             }
 
-            if (deletedFiles.isNotEmpty()) {
+            if (pullRequest.deletedFiles.isNotEmpty()) {
                 th {
                     append("Deleted")
 
                     if (reportConfig.showLineIndicators) {
-                        val totalDeleted = "-" + deletedFiles.getDeletedLines()
+                        val totalDeleted = "-" + pullRequest.deletedFiles.getDeletedLines()
 
                         append(" (${totalDeleted.redFlavor()})")
                     }
@@ -93,26 +88,21 @@ internal class GithubReportBuilder(
      * Each file is linked to its corresponding URL.
      */
     override fun moduleRows() = with(writer) {
-        val modules = pullRequest.modules
-        val createdFiles = pullRequest.createdFiles
-        val modifiedFiles = pullRequest.modifiedFiles
-        val deletedFiles = pullRequest.deletedFiles
-
-        modules.forEach { module ->
+        pullRequest.modules.forEach { module ->
             tr {
                 td {
                     append("<div style=\"display: inline-block;\"><b>${module.name}</b></div>")
                 }
 
-                if (createdFiles.isNotEmpty()) {
+                if (pullRequest.createdFiles.isNotEmpty()) {
                     filesColumn(module.createdFiles, "🟢")
                 }
 
-                if (modifiedFiles.isNotEmpty()) {
+                if (pullRequest.modifiedFiles.isNotEmpty()) {
                     filesColumn(module.modifiedFiles, "🟡")
                 }
 
-                if (deletedFiles.isNotEmpty()) {
+                if (pullRequest.deletedFiles.isNotEmpty()) {
                     filesColumn(module.deletedFiles, "🔴")
                 }
             }

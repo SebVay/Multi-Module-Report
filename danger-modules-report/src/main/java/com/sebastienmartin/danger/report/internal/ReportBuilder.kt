@@ -1,8 +1,7 @@
-package com.sebastienmartin.danger.report
+package com.sebastienmartin.danger.report.internal
 
 import com.sebastienmartin.danger.report.info.PullRequest
-import com.sebastienmartin.danger.report.internal.GetPullRequest
-import com.sebastienmartin.danger.report.internal.SkipReport
+import com.sebastienmartin.danger.report.internal.domain.GetPullRequest
 
 /**
  * Abstract base class for writing reports.

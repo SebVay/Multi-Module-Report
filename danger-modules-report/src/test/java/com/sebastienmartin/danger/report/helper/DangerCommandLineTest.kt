@@ -1,7 +1,7 @@
 package com.sebastienmartin.danger.report.helper
 
-import com.sebastienmartin.danger.report.internal.helper.CommandLine
-import com.sebastienmartin.danger.report.internal.helper.CommandLineImpl
+import com.sebastienmartin.danger.report.internal.domain.CommandLine
+import com.sebastienmartin.danger.report.internal.helper.DangerCommandLine
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -10,14 +10,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import systems.danger.kotlin.models.danger.DangerDSL
 
-internal class CommandLineImplTest {
+internal class DangerCommandLineTest {
     private lateinit var danger: DangerDSL
     private lateinit var commandLine: CommandLine
 
     @BeforeEach
     fun setUp() {
         danger = mockk()
-        commandLine = CommandLineImpl(danger)
+        commandLine = DangerCommandLine(danger)
     }
 
     @Test

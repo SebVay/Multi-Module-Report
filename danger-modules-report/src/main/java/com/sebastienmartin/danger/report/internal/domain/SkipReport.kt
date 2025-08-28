@@ -1,4 +1,4 @@
-package com.sebastienmartin.danger.report.internal
+package com.sebastienmartin.danger.report.internal.domain
 
 import com.sebastienmartin.danger.report.ReportConfig
 import com.sebastienmartin.danger.report.internal.helper.DangerWrapper

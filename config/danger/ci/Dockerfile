@@ -14,6 +14,6 @@ COPY . /code
 
 RUN git fetch
 
-WORKDIR /code/danger/ci
+WORKDIR /code/config/danger/ci
 
 RUN danger-kotlin ci
