@@ -40,9 +40,9 @@ up Danger in your CI environment.
 This library will be published on Maven Central. To use it, add the following to your `Dangerfile.df.kts`:
 
 ```kotlin
-@file:DependsOn("com.sebastienmartin:danger-modules-report:<latest-version>")
+@file:DependsOn("com.sebastmar:danger-modules-report:<latest-version>")
 
-import com.sebastienmartin.danger.report.github.githubModuleReport
+import com.sebastmar.danger.report.github.githubModuleReport
 import systems.danger.kotlin.danger
 
 danger(args) {
@@ -63,8 +63,8 @@ However, a GitHub Action is planned for the near future to provide a more seamle
 You can customize the report using the `githubModuleReport` DSL:
 
 ```kotlin
-import com.sebastienmartin.danger.report.github.githubModuleReport
-import com.sebastienmartin.danger.report.interceptor.ModulesInterceptor
+import com.sebastmar.danger.report.github.githubModuleReport
+import com.sebastmar.danger.report.interceptor.ModulesInterceptor
 
 danger(args) {
     githubModuleReport {

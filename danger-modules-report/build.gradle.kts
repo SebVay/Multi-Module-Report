@@ -27,7 +27,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(files("libs/danger-kotlin.jar"))
+    compileOnly(files("libs/danger-kotlin.jar"))
     testImplementation(files("libs/danger-kotlin.jar"))
 
     // DI

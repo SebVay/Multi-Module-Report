@@ -1,11 +1,11 @@
 @file:Repository("file:../../../build/local-maven-repository")
-@file:DependsOn("com.sebastienmartin:danger-modules-report:[0,)")
+@file:DependsOn("com.sebastmar:danger-modules-report:[0,)")
 
-import com.sebastienmartin.danger.report.githubModuleReport
-import com.sebastienmartin.danger.report.info.Module
-import com.sebastienmartin.danger.report.info.VersionedFile
-import com.sebastienmartin.danger.report.info.VersionedFile.Status
-import com.sebastienmartin.danger.report.interceptor.ModulesInterceptor
+import com.sebastmar.danger.report.githubModuleReport
+import com.sebastmar.danger.report.info.Module
+import com.sebastmar.danger.report.info.VersionedFile
+import com.sebastmar.danger.report.info.VersionedFile.Status
+import com.sebastmar.danger.report.interceptor.ModulesInterceptor
 import systems.danger.kotlin.danger
 
 danger(args) {
