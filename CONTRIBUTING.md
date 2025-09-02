@@ -8,7 +8,7 @@ If you're new to the project, here are a few ways you can get started:
 
 Remember, as a newcomer, your fresh perspective is invaluable in identifying areas that might be unclear or could be improved. Don't hesitate to point out things that seem confusing or overly complex.
 
-*   **Issues**: Check out the [issue tracker](https://github.com/sebast/danger-modules-report/issues) for bugs, feature requests, and other tasks.
+*   **Issues**: Check out the [issue tracker](https://github.com/SebVay/danger-modules-report/issues) for bugs, feature requests, and other tasks.
 *   **Documentation**: Help us improve the documentation by fixing typos, adding examples, or clarifying confusing sections.
 *   **Code**: If you're feeling adventurous, you can dive into the code and start fixing bugs or implementing new features such as:
   * New Hosts (Bitbucket / GitLab)
