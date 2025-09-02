@@ -1,8 +1,7 @@
 package com.sebastmar.danger.report
 
-import com.sebastmar.danger.report.di.initGraph
+import com.sebastmar.danger.report.di.getReport
 import com.sebastmar.danger.report.host.HostType
-import com.sebastmar.danger.report.internal.Report
 import systems.danger.kotlin.models.danger.DangerDSL
 
 /**
@@ -19,27 +18,9 @@ import systems.danger.kotlin.models.danger.DangerDSL
 public fun DangerDSL.githubModuleReport(
     builder: ReportConfigBuilder.() -> Unit = {},
 ) {
-    getReport(HostType.Github, builder)
-        .write()
+    getReport(HostType.Github, builder).write()
 }
 
-/**
- * Internal function to create and configure a [Report] instance.
- *
- * This function serves as the core logic for generating reports across different host types.
- * It initializes the dependency injection graph with the provided host type and report configuration.
- */
-internal fun DangerDSL.getReport(
-    hostType: HostType,
-    builder: ReportConfigBuilder.() -> Unit,
-): Report {
-    val isHostCorrect = when (hostType) {
-        HostType.Github -> onGitHub
-    }
+// public fun DangerDSL.gitlabModuleReport() { ... }
 
-    val reportConfig: ReportConfig = ReportConfigBuilder(isHostCorrect)
-        .apply(builder)
-        .build()
-
-    return initGraph(hostType, reportConfig).get<Report>()
-}
+// public fun DangerDSL.bitbucketModuleReport() { ... }

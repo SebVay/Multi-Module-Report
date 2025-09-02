@@ -11,14 +11,16 @@ import com.sebastmar.danger.report.internal.ext.table
 import com.sebastmar.danger.report.internal.ext.td
 import com.sebastmar.danger.report.internal.ext.th
 import com.sebastmar.danger.report.internal.ext.tr
+import com.sebastmar.danger.report.internal.helper.DangerWrapper
 
 internal class GithubReportBuilder(
     private val reportConfig: ReportConfig,
+    private val dangerWrapper: DangerWrapper,
     getPullRequest: GetPullRequest,
 ) : ReportBuilder(getPullRequest) {
 
     override fun topSection() = with(writer) {
-        if (reportConfig.isHostCorrect.not()) {
+        if (dangerWrapper.onGithub().not()) {
             appendLine(INCORRECT_HOST_WARNING)
         }
 

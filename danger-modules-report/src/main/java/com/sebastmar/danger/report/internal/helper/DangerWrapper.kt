@@ -39,10 +39,12 @@ internal class DangerWrapper(
         }
     }
 
-    fun prBody(): String {
+    internal fun prBody(): String {
         return when {
             dangerContext.onGitHub -> dangerContext.github.pullRequest.body.orEmpty()
             else -> ""
         }
     }
+
+    internal fun onGithub(): Boolean = dangerContext.onGitHub
 }

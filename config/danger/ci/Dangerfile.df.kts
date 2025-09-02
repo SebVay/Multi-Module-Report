@@ -26,7 +26,7 @@ danger(args) {
 
         bottomSection = null
 
-        modulesInterceptor = ModulesInterceptor {
+        modulesInterceptor {
             fixtureModules()
         }
     }

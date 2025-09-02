@@ -85,6 +85,7 @@ publishing {
                         email = "sebast.mar@gmail.com"
                     }
                 }
+
                 scm {
                     url = "https://github.com/SebVay/Danger-Module-Report"
                     connection = "scm:git:git://github.com/SebVay/Danger-Module-Report.git"
@@ -104,13 +105,11 @@ publishing {
 }
 
 signing {
-    // ORG_GRADLE_PROJECT_armoredSigningKey
-    val armoredSigningKey: String? by project
-
-    // ORG_GRADLE_PROJECT_signingPassword
-    val signingPassword: String? by project
+    val armoredSigningKey: String? = System.getenv("SIGNING_PRIVATE_KEY")
+    val signingPassword: String? = System.getenv("SIGNING_PASSWORD")
 
     if (signingPassword != null && armoredSigningKey != null) {
+        println("Signing with provided credentials...")
         useInMemoryPgpKeys(armoredSigningKey, signingPassword)
         sign(publishing.publications["mavenJava"])
     }
