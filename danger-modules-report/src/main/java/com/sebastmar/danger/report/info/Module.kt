@@ -13,6 +13,7 @@ import com.sebastmar.danger.report.info.VersionedFile.Status
  */
 public data class Module(
     val name: String,
+    val type: ModuleType = ModuleType.STANDARD,
     val files: List<VersionedFile> = emptyList(),
 ) {
     internal val createdFiles: List<VersionedFile> by lazy {
@@ -26,4 +27,19 @@ public data class Module(
     internal val deletedFiles: List<VersionedFile> by lazy {
         files.filter { it.status == Status.Deleted }
     }
+}
+
+/**
+ * Represents the type of a module.
+ *
+ * This enum is used to categorize modules based on their role or structure within a project.
+ *
+ * @property PROJECT_ROOT Indicates that the module is the root of the project.
+ * @property STANDARD Indicates a standard module within the project.
+ * @property NOT_KNOWN Indicates that the type could not be determined.
+ */
+public enum class ModuleType {
+    PROJECT_ROOT,
+    STANDARD,
+    NOT_KNOWN,
 }
