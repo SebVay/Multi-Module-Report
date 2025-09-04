@@ -1,6 +1,5 @@
 package com.sebastmar.danger.report.di
 
-import com.sebastmar.danger.report.ReportConfig
 import com.sebastmar.danger.report.internal.domain.GetFiles
 import com.sebastmar.danger.report.internal.domain.GetFilesImpl
 import com.sebastmar.danger.report.internal.domain.GetProjectRoot
@@ -16,13 +15,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal fun domainModule() = module {
-    single<GetFiles> {
-        GetFilesImpl(
-            commandLine = get(),
-            getProjectRoot = get(),
-            runShortStatCommand = get<ReportConfig>().showLineIndicators,
-        )
-    }
+    singleOf(::GetFilesImpl) bind GetFiles::class
 
     singleOf(::GetUpdatedModulesImpl) bind GetUpdatedModules::class
 

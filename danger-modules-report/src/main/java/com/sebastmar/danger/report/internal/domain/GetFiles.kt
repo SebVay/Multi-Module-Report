@@ -1,7 +1,9 @@
 package com.sebastmar.danger.report.internal.domain
 
+import com.sebastmar.danger.report.ReportConfig
 import com.sebastmar.danger.report.info.VersionedFile
 import com.sebastmar.danger.report.info.VersionedFile.Status
+import com.sebastmar.danger.report.internal.helper.DangerWrapper
 import systems.danger.kotlin.models.git.FilePath
 import java.nio.file.Path
 import kotlin.io.path.pathString
@@ -19,7 +21,8 @@ internal interface GetFiles {
 internal class GetFilesImpl(
     private val commandLine: CommandLine,
     private val getProjectRoot: GetProjectRoot,
-    private val runShortStatCommand: Boolean,
+    private val reportConfig: ReportConfig,
+    private val dangerWrapper: DangerWrapper,
 ) : GetFiles {
 
     private val regex by lazy {
@@ -38,7 +41,7 @@ internal class GetFilesImpl(
             var insertions: Int? = null
             var deletions: Int? = null
 
-            if (runShortStatCommand) {
+            if (reportConfig.showLineIndicators) {
                 val diffShortStat = runDiffStat(fullPath)
 
                 val match = regex.find(diffShortStat)
@@ -60,7 +63,7 @@ internal class GetFilesImpl(
     /**
      * Executes a git diff command to get the short statistics for a specific file.
      *
-     * The command compares the current state of the file against the main branch,
+     * The command compares the current state of the file against the ref branch,
      * returning information about insertions and deletions.
      *
      * @param fullPath The path to the file relative to the project root.
@@ -69,6 +72,7 @@ internal class GetFilesImpl(
      *         "1 file changed, X insertions(+), Y deletions(-)"
      */
     private fun runDiffStat(fullPath: String): String {
-        return commandLine.exec("git diff --shortstat origin/main -- ${projectRoot.pathString}/$fullPath")
+        val targetBranch = dangerWrapper.targetBranch()
+        return commandLine.exec("git diff --shortstat $targetBranch -- ${projectRoot.pathString}/$fullPath")
     }
 }
