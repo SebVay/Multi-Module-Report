@@ -31,9 +31,15 @@ internal class DangerWrapper(
      */
     internal fun deletedFiles() = dangerContext.git.deletedFiles
 
-    internal fun targetBranch(): String {
+    /**
+     * Retrieves the target SHA of the current pull request.
+     *
+     * @return The SHA of the base branch of the pull request if running on GitHub,
+     *         otherwise "origin/main" as a fallback for local testing.
+     */
+    internal fun targetSHA(): String {
         return when {
-            dangerContext.onGitHub -> dangerContext.github.pullRequest.base.ref
+            dangerContext.onGitHub -> dangerContext.github.pullRequest.base.sha
 
             // Fallback for local testing
             else -> "origin/main"

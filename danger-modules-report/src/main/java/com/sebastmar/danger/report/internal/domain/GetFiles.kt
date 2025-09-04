@@ -63,7 +63,7 @@ internal class GetFilesImpl(
     /**
      * Executes a git diff command to get the short statistics for a specific file.
      *
-     * The command compares the current state of the file against the ref branch,
+     * The command compares the current state of the file against the target branch,
      * returning information about insertions and deletions.
      *
      * @param fullPath The path to the file relative to the project root.
@@ -72,7 +72,7 @@ internal class GetFilesImpl(
      *         "1 file changed, X insertions(+), Y deletions(-)"
      */
     private fun runDiffStat(fullPath: String): String {
-        val targetBranch = dangerWrapper.targetBranch()
-        return commandLine.exec("git diff --shortstat $targetBranch -- ${projectRoot.pathString}/$fullPath")
+        val targetSHA = dangerWrapper.targetSHA()
+        return commandLine.exec("git diff --shortstat $targetSHA -- ${projectRoot.pathString}/$fullPath")
     }
 }
