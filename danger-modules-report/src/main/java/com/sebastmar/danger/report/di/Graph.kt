@@ -1,7 +1,9 @@
 package com.sebastmar.danger.report.di
 
 import com.sebastmar.danger.report.ReportConfig
+import com.sebastmar.danger.report.ReportConfigBuilder
 import com.sebastmar.danger.report.host.HostType
+import com.sebastmar.danger.report.internal.Report
 import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import systems.danger.kotlin.models.danger.DangerDSL
@@ -21,4 +23,23 @@ internal fun DangerDSL.initGraph(hostType: HostType, reportConfig: ReportConfig)
             dangerModule(),
         )
     }.koin
+}
+
+/**
+ * Internal function to create and configure a [Report] instance.
+ *
+ * This function serves as the core logic for generating reports across different host types.
+ * It initializes the dependency injection graph with the provided host type and report configuration.
+ */
+internal fun DangerDSL.getReport(
+    hostType: HostType,
+    builder: ReportConfigBuilder.() -> Unit,
+): Report {
+    val reportConfig: ReportConfig = ReportConfigBuilder()
+        .apply(builder)
+        .build()
+
+    val koin = initGraph(hostType, reportConfig)
+
+    return koin.get<Report>()
 }

@@ -60,12 +60,14 @@ internal class DangerWrapper(
         }
     }
 
-    fun prBody(): String {
+    internal fun prBody(): String {
         return when {
             dangerContext.onGitHub -> dangerContext.github.pullRequest.body.orEmpty()
             else -> ""
         }
     }
+
+    internal fun onGithub(): Boolean = dangerContext.onGitHub
 
     /**
      * Prints the context of the current Danger run to the CI console.
