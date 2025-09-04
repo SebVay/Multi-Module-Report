@@ -9,10 +9,10 @@ internal interface GetPullRequest {
 
 internal class GetPullRequestImpl(
     private val danger: DangerWrapper,
-    private val getModules: GetModules,
+    private val getUpdatedModules: GetUpdatedModules,
 ) : GetPullRequest {
     override fun invoke(): PullRequest {
-        val modules = getModules()
+        val modules = getUpdatedModules()
 
         return PullRequest(
             htmlLink = danger.htmlLink(),

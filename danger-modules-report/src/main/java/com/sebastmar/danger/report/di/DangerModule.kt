@@ -1,7 +1,7 @@
 package com.sebastmar.danger.report.di
 
-import com.sebastmar.danger.report.internal.DangerReport
 import com.sebastmar.danger.report.internal.Report
+import com.sebastmar.danger.report.internal.TableReport
 import com.sebastmar.danger.report.internal.domain.CommandLine
 import com.sebastmar.danger.report.internal.helper.DangerCommandLine
 import com.sebastmar.danger.report.internal.helper.DangerWrapper
@@ -16,7 +16,7 @@ internal fun DangerDSL.dangerModule() = module {
     singleOf(::DangerWriterImpl) bind DangerWriter::class
 
     single<Report> {
-        DangerReport(
+        TableReport(
             reportBuilder = get(),
             dangerWriter = get(),
             skipReport = get(),

@@ -11,7 +11,7 @@ import com.sebastmar.danger.report.internal.helper.DangerWriter
  *
  * @property reportBuilder The [ReportBuilder] used to output the report content.
  */
-internal class DangerReport internal constructor(
+internal class TableReport internal constructor(
     private val reportBuilder: ReportBuilder,
     private val dangerWriter: DangerWriter,
     skipReport: SkipReport,
