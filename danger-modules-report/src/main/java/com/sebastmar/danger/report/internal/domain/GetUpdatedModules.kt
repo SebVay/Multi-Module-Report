@@ -1,6 +1,7 @@
 package com.sebastmar.danger.report.internal.domain
 
 import com.sebastmar.danger.report.info.Module
+import com.sebastmar.danger.report.info.ModuleType
 import com.sebastmar.danger.report.info.VersionedFile
 import com.sebastmar.danger.report.info.VersionedFile.Status.Created
 import com.sebastmar.danger.report.info.VersionedFile.Status.Deleted
@@ -109,7 +110,7 @@ internal class GetUpdatedModulesImpl(
     }
 
     private companion object {
-        val PROJECT_ROOT = Module(name = "Project's Root")
-        val UNKNOWN_MODULE = Module(name = "Others")
+        val PROJECT_ROOT = Module(name = "Project's Root", type = ModuleType.PROJECT_ROOT)
+        val UNKNOWN_MODULE = Module(name = "Others", type = ModuleType.NOT_KNOWN)
     }
 }

@@ -1,6 +1,7 @@
 package com.sebastmar.danger.report.host
 
 import com.sebastmar.danger.report.ReportConfig
+import com.sebastmar.danger.report.info.Module
 import com.sebastmar.danger.report.info.PullRequest
 import com.sebastmar.danger.report.info.VersionedFile
 import com.sebastmar.danger.report.info.getDeletedLines
@@ -90,7 +91,7 @@ internal class GithubReportBuilder(
      * Each file is linked to its corresponding URL.
      */
     override fun moduleRows() = with(writer) {
-        pullRequest.modules.forEach { module ->
+        pullRequest.modules.sortedBy(Module::type).forEach { module ->
             tr {
                 td {
                     append("<div style=\"display: inline-block;\"><b>${module.name}</b></div>")
