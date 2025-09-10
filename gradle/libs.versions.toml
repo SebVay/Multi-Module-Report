@@ -10,6 +10,10 @@ kotlin = "2.0.21"
 spotless = "7.2.1"
 detekt = "1.23.8"
 ktlint = "1.7.1"
+jacoco = "0.8.13"
+
+# Koin version should follow the one declared in danger-modules-report/libs
+koin = "4.1.0"
 
 [libraries]
 # Junit & Tests
@@ -18,10 +22,13 @@ junit-jupiter-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
+koinJunit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
+
 [plugins]
 java-library = { id = "java-library" }
 maven-publish = { id = "maven-publish" }
 signing = { id = "signing" }
+jacoco = { id = "jacoco" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
