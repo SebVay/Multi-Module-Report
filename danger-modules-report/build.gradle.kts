@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.java.library)
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.jacoco)
 
     // Quality Plugins
     alias(libs.plugins.detekt)
@@ -37,6 +38,8 @@ dependencies {
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter.core)
     testRuntimeOnly(libs.junit.platform.launcher)
+
+    testImplementation(libs.koinJunit5)
     testImplementation(libs.mockk)
 }
 
@@ -46,8 +49,22 @@ detekt {
     source.from("src/main/kotlin", "src/test/kotlin")
 }
 
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
 
 // Include Koin in the published Jar

@@ -42,7 +42,7 @@ This library will be published on Maven Central. To use it, add the following to
 ```kotlin
 @file:DependsOn("com.sebastmar:danger-modules-report:<latest-version>")
 
-import com.sebastmar.danger.report.github.githubModuleReport
+import com.sebastmar.module.report.github.githubModuleReport
 import systems.danger.kotlin.danger
 
 danger(args) {
@@ -63,8 +63,8 @@ However, a GitHub Action is planned for the near future to provide a more seamle
 You can customize the report using the `githubModuleReport` DSL:
 
 ```kotlin
-import com.sebastmar.danger.report.github.githubModuleReport
-import com.sebastmar.danger.report.interceptor.ModulesInterceptor
+import com.sebastmar.module.report.githubModuleReport
+import com.sebastmar.module.report.configuration.ModulesInterceptor
 
 danger(args) {
     githubModuleReport {
