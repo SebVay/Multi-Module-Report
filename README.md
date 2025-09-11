@@ -1,6 +1,7 @@
 # Danger Modules Report
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+Code coverage badge : https://sebvay.github.io/CI-CD-Badges/danger-modules-report/jacoco/test/html/index.html
 
 Generate [beautiful and attractive](https://github.com/SebVay/Danger-Module-Report/pull/1), module-level reports on your Pull Requests using [Danger Kotlin](https://danger.systems/kotlin/).
 
