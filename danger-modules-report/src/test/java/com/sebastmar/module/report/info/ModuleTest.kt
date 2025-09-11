@@ -54,7 +54,7 @@ internal class ModuleTest {
 
         val givenModule = Module(
             name = "moduleA",
-            files = listOf(givenCreated, givenModifiedA, givenModifiedB, givenDeleted)
+            files = listOf(givenCreated, givenModifiedA, givenModifiedB, givenDeleted),
         )
 
         val result = givenModule.modifiedFiles

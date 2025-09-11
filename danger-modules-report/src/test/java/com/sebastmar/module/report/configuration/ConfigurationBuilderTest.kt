@@ -36,7 +36,6 @@ internal class ConfigurationBuilderTest {
         assertEquals(givenDefaultReportStrings, builder.reportStrings)
     }
 
-
     @Test
     fun `verify it builds the default configuration`() {
         val givenDefaultLinkify = true
