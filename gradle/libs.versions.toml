@@ -12,7 +12,7 @@ detekt = "1.23.8"
 ktlint = "1.7.1"
 jacoco = "0.8.13"
 
-# Koin version should follow the one declared in danger-modules-report/libs
+# Koin version should follow the one declared in multi-module-report/libs
 koin = "4.1.0"
 
 [libraries]
@@ -22,7 +22,9 @@ junit-jupiter-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
+# DI
 koinJunit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
+koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
 [plugins]
 java-library = { id = "java-library" }

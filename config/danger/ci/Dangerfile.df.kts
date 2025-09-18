@@ -1,11 +1,10 @@
 @file:Repository("file:../../../build/local-maven-repository")
-@file:DependsOn("com.sebastmar:danger-modules-report:[0,)")
+@file:DependsOn("com.sebastmar:multi-module-report-danger:[0,)")
 
-import com.sebastmar.module.report.configuration.ModulesInterceptor
-import com.sebastmar.module.report.githubModuleReport
 import com.sebastmar.module.report.info.Module
 import com.sebastmar.module.report.info.VersionedFile
 import com.sebastmar.module.report.info.VersionedFile.Status
+import com.sebastmar.multi.module.report.danger.githubModuleReport
 import systems.danger.kotlin.danger
 
 danger(args) {
@@ -15,14 +14,14 @@ danger(args) {
 
     // Then generate a fixture report to cover the capabilities
     githubModuleReport {
-        reportStrings = reportStrings.copy(
+        reportStrings {
             topSection = """
                 # Fixture data
                 The following report intentionally includes some fixture to showcase the reporting capabilities.
                 🚧 Please do not treat these as real findings or required actions.
-            """.trimIndent(),
-            bottomSection = null,
-        )
+            """.trimIndent()
+            bottomSection = null
+        }
 
         modulesInterceptor {
             fixtureModules()
