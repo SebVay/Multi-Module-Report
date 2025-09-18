@@ -4,6 +4,7 @@ import com.sebastmar.module.report.configuration.ModulesInterceptor
 import com.sebastmar.module.report.info.Module
 import com.sebastmar.module.report.info.ModuleType
 import com.sebastmar.module.report.info.VersionedFile
+import com.sebastmar.module.report.internal.ReportStrings
 import java.nio.file.Path
 import kotlin.io.path.exists
 import kotlin.io.path.pathString
@@ -26,9 +27,14 @@ internal class GetUpdatedModulesImpl(
     private val getAllVersionedFiles: GetAllVersionedFiles,
     private val getProjectRoot: GetProjectRoot,
     private val modulesInterceptor: ModulesInterceptor,
+    private val stringProvider: StringProvider
 ) : GetUpdatedModules {
 
-    private val projectRoot: Path by lazy { getProjectRoot() }
+    private val projectRootPath: Path by lazy { getProjectRoot() }
+
+    private val projectRootModule by lazy { Module(stringProvider.projectRootModuleName(), ModuleType.PROJECT_ROOT) }
+
+    private val unknownModule by lazy { Module(stringProvider.unknownModuleName(), ModuleType.NOT_KNOWN) }
 
     override fun invoke(): List<Module> {
         return getAllVersionedFiles()
@@ -48,15 +54,15 @@ internal class GetUpdatedModulesImpl(
      * @return The module containing the provided file, or an "unknown module" if no match is found.
      */
     private fun findCorrectModule(versionedFile: VersionedFile): Module {
-        val startingPath = projectRoot.resolve(versionedFile.fullPath).parent
+        val startingPath = projectRootPath.resolve(versionedFile.fullPath).parent
 
         return generateSequence(startingPath, Path::getParent).firstNotNullOfOrNull { path ->
             when {
-                path.isRootModule() && startingPath == path -> PROJECT_ROOT_MODULE
-                path.isStandardModule() -> Module(name = path.relativeTo(projectRoot).pathString.replace("/", ":"))
+                path.isRootModule() && startingPath == path -> projectRootModule
+                path.isStandardModule() -> Module(name = path.relativeTo(projectRootPath).pathString.replace("/", ":"))
                 else -> null
             }
-        } ?: UNKNOWN_MODULE
+        } ?: unknownModule
     }
 
     /**
@@ -87,6 +93,3 @@ internal class GetUpdatedModulesImpl(
         return resolve("settings.gradle.kts").exists() || resolve("settings.gradle").exists()
     }
 }
-
-private val PROJECT_ROOT_MODULE = Module("Project's Root", ModuleType.PROJECT_ROOT)
-private val UNKNOWN_MODULE = Module("Others", ModuleType.NOT_KNOWN)

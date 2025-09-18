@@ -12,7 +12,7 @@ import com.sebastmar.module.report.internal.domain.GetVersionedFiles
 import com.sebastmar.module.report.internal.domain.GetVersionedFilesImpl
 import com.sebastmar.module.report.internal.domain.SkipReport
 import com.sebastmar.module.report.internal.domain.SkipReportImpl
-import com.sebastmar.module.report.internal.system.di.dangerSystemModule
+import com.sebastmar.module.report.internal.system.danger.di.dangerSystemModule
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

@@ -2,6 +2,7 @@ package com.sebastmar.module.report.configuration
 
 import com.sebastmar.module.report.info.Module
 import com.sebastmar.module.report.internal.Configuration
+import com.sebastmar.module.report.internal.ReportStrings
 import com.sebastmar.module.report.internal.ShouldLinkifyFiles
 import com.sebastmar.module.report.internal.ShowCircleIndicators
 import com.sebastmar.module.report.internal.ShowLineIndicators
@@ -27,13 +28,11 @@ internal class ConfigurationBuilderTest {
         val givenDefaultShowCircle = true
         val givenDefaultShowLine = true
         val givenDefaultSkipKeyword = "module-no-report"
-        val givenDefaultReportStrings = ReportStrings()
 
         assertEquals(givenDefaultLinkify, builder.linkifyFiles)
         assertEquals(givenDefaultShowCircle, builder.showCircleIndicators)
         assertEquals(givenDefaultShowLine, builder.showLineIndicators)
         assertEquals(givenDefaultSkipKeyword, builder.skipReportKeyword)
-        assertEquals(givenDefaultReportStrings, builder.reportStrings)
     }
 
     @Test
@@ -42,7 +41,7 @@ internal class ConfigurationBuilderTest {
         val givenDefaultShowCircle = true
         val givenDefaultShowLine = true
         val givenDefaultSkipKeyword = "module-no-report"
-        val givenDefaultReportStrings = ReportStrings()
+        val givenDefaultReportStrings = ReportStringsBuilder().build()
 
         val result = builder.build()
 
@@ -64,14 +63,25 @@ internal class ConfigurationBuilderTest {
         val givenShowCircle = false
         val givenShowLine = false
         val givenSkipKeyword = "skip-this-report"
-        val givenReportStrings = mockk<ReportStrings>()
+
+        val reportStringsTop = "Custom Top"
+        val reportStringsBottomSection = "Custom Bottom section"
+        val reportStringsWarning = "Warning"
+        val reportStringsRootModule = "Root"
+        val reportStringsUnknownModule = "Misc"
 
         val result = builder.apply {
             linkifyFiles = givenLinkify
             showCircleIndicators = givenShowCircle
             showLineIndicators = givenShowLine
             skipReportKeyword = givenSkipKeyword
-            reportStrings = givenReportStrings
+            reportStrings {
+                topSection = reportStringsTop
+                bottomSection = reportStringsBottomSection
+                incorrectHostWarning = reportStringsWarning
+                projectRootModuleName = reportStringsRootModule
+                unknownModuleName = reportStringsUnknownModule
+            }
         }.build()
 
         val expected = Configuration(
@@ -80,7 +90,13 @@ internal class ConfigurationBuilderTest {
             showLineIndicators = ShowLineIndicators(givenShowLine),
             modulesInterceptor = NoOpModulesInterceptor,
             skipReportKeyword = SkipReportKeyword(givenSkipKeyword),
-            reportStrings = givenReportStrings,
+            reportStrings = ReportStrings(
+                topSection = reportStringsTop,
+                bottomSection = reportStringsBottomSection,
+                incorrectHostWarning = reportStringsWarning,
+                projectRootModuleName = reportStringsRootModule,
+                unknownModuleName = reportStringsUnknownModule,
+            )
         )
 
         assertEquals(expected, result)

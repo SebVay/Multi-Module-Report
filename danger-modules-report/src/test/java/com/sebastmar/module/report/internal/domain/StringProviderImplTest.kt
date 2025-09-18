@@ -1,6 +1,6 @@
 package com.sebastmar.module.report.internal.domain
 
-import com.sebastmar.module.report.configuration.ReportStrings
+import com.sebastmar.module.report.internal.ReportStrings
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -50,5 +50,27 @@ internal class StringProviderImplTest {
         val result = stringProvider.incorrectHostWarning()
 
         assertEquals(givenWarning, result)
+    }
+
+    @Test
+    fun `verify it returns the unknown module name`() {
+        val givenUnknownModuleName = "Unknown !"
+
+        every { reportStrings.unknownModuleName } returns givenUnknownModuleName
+
+        val result = stringProvider.unknownModuleName()
+
+        assertEquals(givenUnknownModuleName, result)
+    }
+
+    @Test
+    fun `verify it returns the root module name`() {
+        val givenRootModule = "Root Module"
+
+        every { reportStrings.projectRootModuleName } returns givenRootModule
+
+        val result = stringProvider.projectRootModuleName()
+
+        assertEquals(givenRootModule, result)
     }
 }

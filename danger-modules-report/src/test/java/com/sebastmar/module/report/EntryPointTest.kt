@@ -58,11 +58,15 @@ internal class EntryPointTest : KoinTest {
 
         with(givenDanger) {
             githubModuleReport {
-                reportStrings = reportStrings.copy(
-                    topSection = "Top Section",
-                    bottomSection = "Bottom Section",
-                    incorrectHostWarning = "Warning",
-                )
+                skipReportKeyword = "SKIP"
+
+                reportStrings {
+                    topSection = "Top Section"
+                    bottomSection = "Bottom Section"
+                    incorrectHostWarning = "Warning"
+                    unknownModuleName = "Unknown Module"
+                    projectRootModuleName = "Root Module"
+                }
             }
         }
 

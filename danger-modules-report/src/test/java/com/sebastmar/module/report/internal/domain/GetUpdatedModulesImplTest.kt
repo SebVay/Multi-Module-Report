@@ -21,11 +21,13 @@ class GetUpdatedModulesImplTest {
 
     private val getAllVersionedFiles: GetAllVersionedFiles = mockk(relaxed = true)
     private val getProjectRoot: GetProjectRoot = mockk()
+    private val stringProvider: StringProvider = mockk()
 
     private val getUpdatedModules: GetUpdatedModules = GetUpdatedModulesImpl(
         getAllVersionedFiles = getAllVersionedFiles,
         getProjectRoot = getProjectRoot,
         modulesInterceptor = NoOpModulesInterceptor,
+        stringProvider = stringProvider,
     )
 
     @AfterEach
@@ -75,6 +77,7 @@ class GetUpdatedModulesImplTest {
     @Test
     fun `verify it returns the ProjectRoot Module and group its files accordingly`() {
         val givenRoot = createProjectRootDir()
+        val givenModuleName = "Project's Root"
         val givenVersionedFiles = listOf(
             VersionedFile("README.md", "README.md", Status.Modified),
             VersionedFile("LICENCE.md", "LICENCE.md", Status.Modified),
@@ -82,11 +85,12 @@ class GetUpdatedModulesImplTest {
 
         every { getProjectRoot() } returns givenRoot
         every { getAllVersionedFiles() } returns givenVersionedFiles
+        every { stringProvider.projectRootModuleName() } returns givenModuleName
 
         val result = getUpdatedModules()
 
         val expected = Module(
-            name = "Project's Root",
+            name = givenModuleName,
             type = ModuleType.PROJECT_ROOT,
             files = givenVersionedFiles,
         )
@@ -97,15 +101,16 @@ class GetUpdatedModulesImplTest {
     @Test
     fun `verify it returns the Unknown module when its file doesn't belong to any known modules`() {
         val givenRoot = createProjectRootDir(useSettingsKts = true)
-
         val givenVersionedDoc = VersionedFile("Doc.md", "docs/Guide.md", Status.Deleted)
+        val givenModuleName = "Others"
 
         every { getProjectRoot() } returns givenRoot
         every { getAllVersionedFiles() } returns listOf(givenVersionedDoc)
+        every { stringProvider.unknownModuleName() } returns givenModuleName
 
         val result = getUpdatedModules()
 
-        val expected = Module("Others", ModuleType.NOT_KNOWN, listOf(givenVersionedDoc))
+        val expected = Module(givenModuleName, ModuleType.NOT_KNOWN, listOf(givenVersionedDoc))
 
         assertEquals(expected, result.first())
     }
@@ -153,6 +158,7 @@ class GetUpdatedModulesImplTest {
             getAllVersionedFiles = getAllVersionedFiles,
             getProjectRoot = getProjectRoot,
             modulesInterceptor = givenInterceptor,
+            stringProvider = stringProvider,
         )
 
         val result = getUpdatedModules()
@@ -162,7 +168,7 @@ class GetUpdatedModulesImplTest {
 
     /**
      * Creates a temporary "root project directory" for testing purposes.
-     * It create in this directory a settings.gradle file which mimics a basic Gradle project structure.
+     * In this directory, a settings.gradle file is created. It mimics a basic Gradle project structure.
      */
     private fun createProjectRootDir(useSettingsKts: Boolean = false): Path {
         val settingsFile = if (useSettingsKts) "settings.gradle.kts" else "settings.gradle"

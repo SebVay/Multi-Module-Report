@@ -53,7 +53,7 @@ jacoco {
     toolVersion = libs.versions.jacoco.get()
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
@@ -68,7 +68,7 @@ tasks.jacocoTestReport {
 }
 
 // Include Koin in the published Jar
-tasks.withType<Jar> {
+tasks.jar {
     from(zipTree("libs/koin-core-jvm-4.1.0.jar"))
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

@@ -1,4 +1,4 @@
-package com.sebastmar.module.report.internal.system.di
+package com.sebastmar.module.report.internal.system.danger.di
 
 import com.sebastmar.module.report.internal.system.SystemCommandLine
 import com.sebastmar.module.report.internal.system.SystemWrapper
