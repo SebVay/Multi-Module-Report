@@ -1,0 +1,162 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
+package com.sebastmar.module.report.configuration
+
+import com.sebastmar.module.report.info.Module
+import com.sebastmar.module.report.internal.Configuration
+import com.sebastmar.module.report.internal.ReportStrings
+import com.sebastmar.module.report.internal.ShouldLinkifyFiles
+import com.sebastmar.module.report.internal.ShowCircleIndicators
+import com.sebastmar.module.report.internal.ShowLineIndicators
+import com.sebastmar.module.report.internal.SkipReportKeyword
+
+@DslMarker
+public annotation class ConfigurationBuilderDsl
+
+@DslMarker
+public annotation class StringBuilderDsl
+
+/**
+ * A builder class for configuring reports.
+ *
+ * This class provides a DSL for configuring various aspects of a report,
+ * such as whether to write sections and how to intercept modules.
+ */
+@ConfigurationBuilderDsl
+public class ConfigurationBuilder {
+
+    /**
+     * Determines whether links to the diff page for each file are added to the report.
+     * When `true`, links are added. When `false`, links are omitted.
+     * Defaults to `true`.
+     */
+    public var linkifyFiles: Boolean = true
+
+    /**
+     * Toggles whether circle indicators are displayed to the left of each file name.
+     * Default value is `true`.
+     */
+    public var showCircleIndicators: Boolean = true
+
+    /**
+     * Toggles whether the (+/-) ine indicator is displayed to next to the "Added", "Modified", "Deleted" sections.
+     * Default value is `true`.
+     */
+    public var showLineIndicators: Boolean = true
+
+    /**
+     * Allows modules to be intercepted, modified, or omitted from the report.
+     * By default, this is a [NoOpModulesInterceptor] which performs no interception.
+     * @see ModulesInterceptor
+     */
+    private var modulesInterceptor: ModulesInterceptor = NoOpModulesInterceptor
+
+    /**
+     * Defines the strings used within the report.
+     * This allows for customization and localization of the text displayed in the generated report.
+     * Defaults to an instance of [ReportStrings] with default English strings.
+     * @see ReportStrings
+     */
+    private var reportStringsBuilder: ReportStringsBuilder = ReportStringsBuilder()
+
+    /**
+     * Configures [reportStringsBuilder] using a dedicated DSL builder.
+     * Example:
+     * reportStrings {
+     *   projectRootModuleName = "Root"
+     *   unknownModuleName = "Others"
+     * }
+     */
+    public fun reportStrings(block: ReportStringsBuilder.() -> Unit = {}) {
+        reportStringsBuilder = ReportStringsBuilder().apply(block)
+    }
+
+    /**
+     * Sets an interceptor for the list of modules used in the report generation process.
+     *
+     * The interceptor allows for customization of the modules list by modifying or filtering
+     * the modules before they are processed further.
+     *
+     * Example:
+     * ```kotlin
+     * modulesInterceptor { modules ->
+     *     modules.filterNot { it.name == "internal-module" } // Exclude a specific module
+     * }
+     * ```
+     *
+     * @param block A lambda function that takes the current list of [Module]s as input
+     *              and returns a new, possibly modified, list of [Module]s.
+     *              The returned list will be used for report generation.
+     */
+    public fun modulesInterceptor(block: (List<Module>) -> List<Module>) {
+        modulesInterceptor = ModulesInterceptor(block)
+    }
+
+    /**
+     * If the PR description contains these keywords, the report generation will be skipped.
+     * Default value is `module-no-report`.
+     */
+    public var skipReportKeyword: String = "module-no-report"
+
+    internal fun build(): Configuration = Configuration(
+        shouldLinkifyFiles = ShouldLinkifyFiles(linkifyFiles),
+        showCircleIndicators = ShowCircleIndicators(showCircleIndicators),
+        showLineIndicators = ShowLineIndicators(showLineIndicators),
+        modulesInterceptor = modulesInterceptor,
+        skipReportKeyword = SkipReportKeyword(skipReportKeyword),
+        reportStrings = reportStringsBuilder.build(),
+    )
+}
+
+/**
+ * A builder class for customizing the string components of a report.
+ *
+ * This DSL (Domain Specific Language) builder is designed to be used in contexts that require
+ * the customization of text sections, warnings, or labels within generated reports.
+ */
+@StringBuilderDsl
+public class ReportStringsBuilder internal constructor() {
+
+    /**
+     * Represents the customizable top section of a report.
+     * Can be set to modify the heading or introductory text at the top of the generated report.
+     */
+    public var topSection: String? = "# Updated Modules"
+
+    /**
+     * Represents the customizable bottom section of a report.
+     * It is an optional string that is appended to the end of the report.
+     * By default, it includes a generated footer message for attribution.
+     */
+    public var bottomSection: String? =
+        "_Generated by [multi-module-report](https://github.com/SebVay/Multi-Module-Report)_ with ❤️"
+
+    /**
+     * Represents the default name for the root module of a project.
+     *
+     * This property is used during the generation of multi-module reports to label the root module within the report.
+     *
+     * This value can be customized if a different designation for the root module is needed.
+     */
+    public var projectRootModuleName: String = "Project's Root"
+
+    /**
+     * Represents the default name used for paths that cannot be identified
+     * or categorized explicitly in the reporting process.
+     *
+     * This value can be customized to better suit specific report configurations.
+     */
+    public var unknownModuleName: String = "Others"
+
+    /**
+     * Builds and returns a [ReportStrings] instance using the current state of the builder.
+     *
+     * @return A [ReportStrings] instance configured with the current properties of the builder.
+     */
+    internal fun build(): ReportStrings = ReportStrings(
+        topSection = topSection,
+        bottomSection = bottomSection,
+        projectRootModuleName = projectRootModuleName,
+        unknownModuleName = unknownModuleName,
+    )
+}

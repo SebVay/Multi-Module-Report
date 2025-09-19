@@ -19,11 +19,12 @@ dependencyResolutionManagement {
     }
 
     versionCatalogs {
-        create("moduleInfo") {
-            from(files("danger-modules-report/moduleInfo.versions.toml"))
+        create("projectLibs") {
+            from(files("projectLibs.toml"))
         }
     }
 }
 
-rootProject.name = "Danger Report Modules"
-include(":danger-modules-report")
+rootProject.name = "Multi Module Report"
+include(":multi-module-report")
+include(":multi-module-report-danger")

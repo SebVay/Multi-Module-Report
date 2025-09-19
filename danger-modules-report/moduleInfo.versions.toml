@@ -1,5 +1,0 @@
-[versions]
-version = "0.0.1-SNAPSHOT"
-
-[libraries]
-module = { group = "com.sebastmar", name = "danger-modules-report", version.ref = "version" }

@@ -1,0 +1,6 @@
+[versions]
+version = "0.0.1-SNAPSHOT"
+
+[libraries]
+multi-module-report-core = { group = "com.sebastmar", name = "multi-module-report", version.ref = "version" }
+multi-module-report-danger = { group = "com.sebastmar", name = "multi-module-report-danger", version.ref = "version" }

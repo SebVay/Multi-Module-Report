@@ -12,10 +12,11 @@ project_root="$script_path"/../../..
 # Change to project root directory
 cd "$project_root" || exit
 
-echo "${green}Publishing 'danger-modules-report' at build/local-maven-repository ${reset}"
+echo "${green}Publishing 'multi-module-report-danger' at build/local-maven-repository ${reset}"
 
 # Run gradle task to publish the artifacts locally
-./gradlew danger-modules-report:publishAllPublicationsToRootProjectRepository
+./gradlew multi-module-report:publishAllPublicationsToRootProjectRepository \
+          multi-module-report-danger:publishAllPublicationsToRootProjectRepository
 
 # Clean any previous temp container used for extracting output
 docker rm danger-module-report-image >/dev/null 2>&1 || true
