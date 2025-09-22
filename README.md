@@ -2,6 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Jacoco](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SebVay/CI-CD-Badges/refs/heads/main/Multi-Module-Report/badges/coverage.json)](https://sebvay.github.io/CI-CD-Badges/Multi-Module-Report/)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/SebVay/Multi-Module-Report/main)
 
 Generate [beautiful and attractive](https://github.com/SebVay/Multi-Module-Report/pull/1), modules report 
 on your Pull Requests using Github Actions or [Danger Kotlin](https://danger.systems/kotlin/).
