@@ -1,0 +1,1 @@
+[![Jacoco](https://raw.githubusercontent.com/SebVay/CI-CD-Badges/refs/heads/main/Multi-Module-Report/multi-module-report-danger/badges/coverage.json)](https://sebvay.github.io/CI-CD-Badges/Multi-Module-Report/)
