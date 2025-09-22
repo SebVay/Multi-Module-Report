@@ -1,7 +1,7 @@
 # Danger Modules Report
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Jacoco](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSebVay%2FCI-CD-Badges%2Frefs%2Fheads%2Fmain%2Fdanger-modules-report%2Fbadges%2Fcoverage.json)](https://sebvay.github.io/CI-CD-Badges/danger-modules-report/jacoco/test/html/index.html)
+[![Jacoco](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SebVay/CI-CD-Badges/refs/heads/main/Multi-Module-Report/badges/coverage.json)](https://sebvay.github.io/CI-CD-Badges/Multi-Module-Report/)
 
 Generate [beautiful and attractive](https://github.com/SebVay/Multi-Module-Report/pull/1), modules report 
 on your Pull Requests using Github Actions or [Danger Kotlin](https://danger.systems/kotlin/).
