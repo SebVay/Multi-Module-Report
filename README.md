@@ -1,4 +1,4 @@
-# Danger Modules Report
+# Multi Modules Report
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Jacoco](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SebVay/CI-CD-Badges/refs/heads/main/Multi-Module-Report/badges/coverage.json)](https://sebvay.github.io/CI-CD-Badges/Multi-Module-Report/)
