@@ -1,0 +1,28 @@
+name: Run Multi-Module-Report
+
+on:
+  #pull_request:
+  #  branches: [ '**' ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  run-app:
+    name: Run Gradle application
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gradle/actions/wrapper-validation@v5
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: false
+      - name: Run Gradle application
+        run: ./gradlew -p multi-module-report-gradle run --stacktrace --info
