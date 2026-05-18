@@ -5,6 +5,11 @@ import com.sebastmar.module.report.system.SystemCommandLine
 /**
  * Client over the GitHub CLI.
  * All gh calls should live here.
+ *
+ * In GitHub Actions, the checkout is a detached HEAD (merge commit),
+ * so `gh pr view` cannot auto-detect the PR. We resolve the PR number
+ * from the `GITHUB_PR_NUMBER` env var (set by the workflow) or fall
+ * back to `gh pr view` for local usage.
  */
 @Suppress("TooManyFunctions")
 internal class GithubClient(
@@ -14,25 +19,29 @@ internal class GithubClient(
         const val COMMENT_MARKER = "<!-- multi-module-report -->"
     }
 
+    private val resolvedPrNumber: String by lazy {
+        System.getenv("GITHUB_PR_NUMBER")?.takeIf { it.isNotBlank() }
+            ?: commandLine.exec(
+                command = "gh",
+                arguments = listOf("pr", "view", "--json", "number", "--jq", ".number"),
+            ).trim()
+    }
+
     /**
-     * Returns the PR number for the current branch.
+     * Returns the PR number, resolved from env var or gh CLI.
      */
-    fun prNumber(): String = commandLine.exec(
-        command = "gh",
-        arguments = listOf("pr", "view", "--json", "number", "--jq", ".number"),
-    ).trim()
+    fun prNumber(): String = resolvedPrNumber
 
     /**
      * Searches existing PR comments for one containing [COMMENT_MARKER].
      * Returns the comment ID if found, null otherwise.
      */
     fun findExistingCommentId(): Long? {
-        val prNumber = prNumber()
         val output = commandLine.exec(
             command = "gh",
             arguments = listOf(
                 "api",
-                "repos/{owner}/{repo}/issues/$prNumber/comments",
+                "repos/{owner}/{repo}/issues/$resolvedPrNumber/comments",
                 "--jq",
                 ".[] | select(.body | contains(\"$COMMENT_MARKER\")) | .id",
             ),
@@ -44,10 +53,9 @@ internal class GithubClient(
      * Creates a new comment on the current PR.
      */
     fun createComment(body: String) {
-        val prNumber = prNumber()
         commandLine.exec(
             command = "gh",
-            arguments = listOf("pr", "comment", prNumber, "--body", body),
+            arguments = listOf("pr", "comment", resolvedPrNumber, "--body", body),
         )
     }
 
@@ -68,15 +76,38 @@ internal class GithubClient(
         )
     }
 
-    fun prUrl(): String = commandLine.exec(
-        command = "gh",
-        arguments = listOf("pr", "view", "--json", "url", "--jq", ".url"),
-    ).trim()
+    fun prUrl(): String {
+        val url = System.getenv("GITHUB_PR_URL")?.takeIf { it.isNotBlank() }
+        if (url != null) return url
 
-    fun prBody(): String = commandLine.exec(
-        command = "gh",
-        arguments = listOf("pr", "view", "--json", "body", "--jq", ".body"),
-    ).trim()
+        return commandLine.exec(
+            command = "gh",
+            arguments = listOf(
+                "pr",
+                "view",
+                resolvedPrNumber,
+                "--json",
+                "url",
+                "--jq",
+                ".url",
+            ),
+        ).trim()
+    }
+
+    fun prBody(): String {
+        return commandLine.exec(
+            command = "gh",
+            arguments = listOf(
+                "pr",
+                "view",
+                resolvedPrNumber,
+                "--json",
+                "body",
+                "--jq",
+                ".body",
+            ),
+        ).trim()
+    }
 
     /**
      * Returns the list of file paths added in the PR using gh + jq.
@@ -99,7 +130,15 @@ internal class GithubClient(
         val jqExpr = """.files[] | select(($changeType | ascii_upcase) == "$type") | (.path // "")"""
         val output = commandLine.exec(
             command = "gh",
-            arguments = listOf("pr", "view", "--json", "files", "--jq", jqExpr),
+            arguments = listOf(
+                "pr",
+                "view",
+                resolvedPrNumber,
+                "--json",
+                "files",
+                "--jq",
+                jqExpr,
+            ),
         )
         return output
             .lines()
