@@ -31,8 +31,9 @@ dependencies {
     compileOnly(files("libs/danger-kotlin.jar"))
     testImplementation(files("libs/danger-kotlin.jar"))
 
-    // DI
     implementation(project(":multi-module-report"))
+
+    // DI
     implementation(files("libs/koin-core-jvm-4.1.0.jar"))
 
     // JUnit

@@ -28,3 +28,4 @@ dependencyResolutionManagement {
 rootProject.name = "Multi Module Report"
 include(":multi-module-report")
 include(":multi-module-report-danger")
+include(":multi-module-report-ga")

@@ -28,6 +28,7 @@ koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
 [plugins]
 java-library = { id = "java-library" }
+application = { id = "application" }
 maven-publish = { id = "maven-publish" }
 signing = { id = "signing" }
 jacoco = { id = "jacoco" }
