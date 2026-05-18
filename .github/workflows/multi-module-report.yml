@@ -29,4 +29,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: ./gradlew :multi-module-report-ga:run --stacktrace
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :multi-module-report-ga:run --stacktrace
