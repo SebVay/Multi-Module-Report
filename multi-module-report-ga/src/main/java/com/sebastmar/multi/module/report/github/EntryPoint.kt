@@ -3,10 +3,10 @@ package com.sebastmar.multi.module.report.github
 import com.sebastmar.module.report.BuilderBlock
 import com.sebastmar.module.report.configuration.ConfigurationBuilder
 import com.sebastmar.module.report.githubReport
+import com.sebastmar.multi.module.report.github.internal.GithubClient
 import com.sebastmar.multi.module.report.github.internal.GithubCommandLine
 import com.sebastmar.multi.module.report.github.internal.GithubWrapper
 import com.sebastmar.multi.module.report.github.internal.GithubWriter
-import com.sebastmar.multi.module.report.github.internal.GithubClient
 
 /**
  * Generates a GitHub comment with a report of the modules that have been modified in a pull request.

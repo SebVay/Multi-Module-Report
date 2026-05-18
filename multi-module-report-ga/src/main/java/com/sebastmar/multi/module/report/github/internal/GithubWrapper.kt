@@ -39,9 +39,8 @@ internal class GithubWrapper(
             ?: ""
     }
 
-    override fun onGithub(): Boolean =
-        System.getenv("GITHUB_ACTIONS") == "true" ||
-            System.getenv("GITHUB_REPOSITORY") != null
+    override fun onGithub(): Boolean = System.getenv("GITHUB_ACTIONS") == "true" ||
+        System.getenv("GITHUB_REPOSITORY") != null
 
     // Fetch added/modified/removed using dedicated client calls (no TSV parsing)
     private fun fetchPrChanges(): PrChanges {

@@ -27,7 +27,6 @@ internal class GithubCommandLine : SystemCommandLine {
             println("Exit code for $fullCommand : $it")
         }
 
-
         return output
     }
 }

@@ -154,8 +154,10 @@ internal class GithubClientTest {
                 listOf(
                     "api",
                     "repos/{owner}/{repo}/issues/comments/$commentId",
-                    "--method", "PATCH",
-                    "--field", "body=$body",
+                    "--method",
+                    "PATCH",
+                    "--field",
+                    "body=$body",
                 ),
             )
         }
