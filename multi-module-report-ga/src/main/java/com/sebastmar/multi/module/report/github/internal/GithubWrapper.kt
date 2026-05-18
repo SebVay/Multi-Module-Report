@@ -35,8 +35,7 @@ internal class GithubWrapper(
         return runCatching {
             github.prBody()
         }.getOrNull()?.takeIf { it.isNotBlank() }
-            ?: System.getenv("GITHUB_PR_BODY")
-            ?: ""
+            ?: System.getenv("GITHUB_PR_BODY").orEmpty()
     }
 
     override fun onGithub(): Boolean = System.getenv("GITHUB_ACTIONS") == "true" ||
