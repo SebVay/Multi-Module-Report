@@ -22,9 +22,16 @@ internal class GithubClientTest {
         unmockkAll()
     }
 
+    private fun mockPrNumber(prNumber: String = "42") {
+        every {
+            commandLine.exec("gh", listOf("pr", "view", "--json", "number", "--jq", ".number"))
+        } returns "$prNumber\n"
+    }
+
     @Test
     fun `prUrl calls gh with correct arguments and trims output`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "url", "--jq", ".url")) } returns "  https://github.com/org/repo/pull/1  \n"
+        mockPrNumber()
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "url", "--jq", ".url")) } returns "  https://github.com/org/repo/pull/1  \n"
 
         val result = client.prUrl()
 
@@ -33,7 +40,8 @@ internal class GithubClientTest {
 
     @Test
     fun `prBody calls gh with correct arguments and trims output`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "body", "--jq", ".body")) } returns "  PR description  \n"
+        mockPrNumber()
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "body", "--jq", ".body")) } returns "  PR description  \n"
 
         val result = client.prBody()
 
@@ -42,7 +50,7 @@ internal class GithubClientTest {
 
     @Test
     fun `prNumber calls gh with correct arguments and trims output`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "number", "--jq", ".number")) } returns "42\n"
+        mockPrNumber()
 
         val result = client.prNumber()
 
@@ -51,8 +59,9 @@ internal class GithubClientTest {
 
     @Test
     fun `prAddedFiles returns parsed list of added file paths`() {
+        mockPrNumber()
         val jqExpr = """.files[] | select((((.changeType? // .status) // "") | ascii_upcase) == "ADDED") | (.path // "")"""
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "files", "--jq", jqExpr)) } returns "src/Main.kt\nsrc/Utils.kt\n"
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "files", "--jq", jqExpr)) } returns "src/Main.kt\nsrc/Utils.kt\n"
 
         val result = client.prAddedFiles()
 
@@ -61,8 +70,9 @@ internal class GithubClientTest {
 
     @Test
     fun `prModifiedFiles returns parsed list of modified file paths`() {
+        mockPrNumber()
         val jqExpr = """.files[] | select((((.changeType? // .status) // "") | ascii_upcase) == "MODIFIED") | (.path // "")"""
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "files", "--jq", jqExpr)) } returns "build.gradle.kts\n"
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "files", "--jq", jqExpr)) } returns "build.gradle.kts\n"
 
         val result = client.prModifiedFiles()
 
@@ -71,8 +81,9 @@ internal class GithubClientTest {
 
     @Test
     fun `prRemovedFiles returns parsed list of removed file paths`() {
+        mockPrNumber()
         val jqExpr = """.files[] | select((((.changeType? // .status) // "") | ascii_upcase) == "REMOVED") | (.path // "")"""
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "files", "--jq", jqExpr)) } returns "old/File.kt\n"
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "files", "--jq", jqExpr)) } returns "old/File.kt\n"
 
         val result = client.prRemovedFiles()
 
@@ -81,8 +92,9 @@ internal class GithubClientTest {
 
     @Test
     fun `prAddedFiles filters blank lines and duplicates`() {
+        mockPrNumber()
         val jqExpr = """.files[] | select((((.changeType? // .status) // "") | ascii_upcase) == "ADDED") | (.path // "")"""
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "files", "--jq", jqExpr)) } returns "file.kt\n\nfile.kt\n  \n"
+        every { commandLine.exec("gh", listOf("pr", "view", "42", "--json", "files", "--jq", jqExpr)) } returns "file.kt\n\nfile.kt\n  \n"
 
         val result = client.prAddedFiles()
 
@@ -91,13 +103,13 @@ internal class GithubClientTest {
 
     @Test
     fun `findExistingCommentId returns id when comment with marker exists`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "number", "--jq", ".number")) } returns "7\n"
+        mockPrNumber()
         every {
             commandLine.exec(
                 "gh",
                 listOf(
                     "api",
-                    "repos/{owner}/{repo}/issues/7/comments",
+                    "repos/{owner}/{repo}/issues/42/comments",
                     "--jq",
                     ".[] | select(.body | contains(\"${GithubClient.COMMENT_MARKER}\")) | .id",
                 ),
@@ -111,13 +123,13 @@ internal class GithubClientTest {
 
     @Test
     fun `findExistingCommentId returns null when no matching comment`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "number", "--jq", ".number")) } returns "7\n"
+        mockPrNumber()
         every {
             commandLine.exec(
                 "gh",
                 listOf(
                     "api",
-                    "repos/{owner}/{repo}/issues/7/comments",
+                    "repos/{owner}/{repo}/issues/42/comments",
                     "--jq",
                     ".[] | select(.body | contains(\"${GithubClient.COMMENT_MARKER}\")) | .id",
                 ),
@@ -131,13 +143,12 @@ internal class GithubClientTest {
 
     @Test
     fun `createComment calls gh pr comment with correct arguments`() {
-        every { commandLine.exec("gh", listOf("pr", "view", "--json", "number", "--jq", ".number")) } returns "7\n"
-
+        mockPrNumber()
         val body = "test body"
         client.createComment(body)
 
         verify(exactly = 1) {
-            commandLine.exec("gh", listOf("pr", "comment", "7", "--body", body))
+            commandLine.exec("gh", listOf("pr", "comment", "42", "--body", body))
         }
     }
 
